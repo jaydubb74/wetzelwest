@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WetzelCRM — Coming Soon</title>
+  <meta name="description" content="WetzelCRM — A custom CRM built on WetzelWest." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #0f1a2a;
+      --muted:  #6b7e96;
+      --border: #e2e8f0;
+      --blue:   #1e6fcc;
+      --surface:#f8fafc;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .nav-mark {
+      width: 30px;
+      height: 30px;
+      background: var(--blue);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .nav-name {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .nav-back {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--blue); }
+
+    /* Main */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      background: #e8f0fc;
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.65;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Feature list */
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      max-width: 600px;
+    }
+
+    .feature-chip {
+      padding: 0.45rem 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.75rem;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .back-btn:hover {
+      background: var(--blue);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--muted); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-brand">
+      <span class="nav-mark">W</span>
+      <span class="nav-name">WetzelCRM</span>
+    </a>
+    <a href="/" class="nav-back">
+      ← wetzelwest.com
+    </a>
+  </nav>
+
+  <main>
+    <div class="badge">
+      <span class="badge-dot"></span>
+      In development
+    </div>
+    <h1>WetzelCRM</h1>
+    <p class="subtitle">
+      A custom-built CRM for managing contacts, pipelines, and relationships — part of the WetzelWest product lab.
+    </p>
+    <div class="features">
+      <span class="feature-chip">Contact management</span>
+      <span class="feature-chip">Pipeline tracking</span>
+      <span class="feature-chip">Activity feed</span>
+      <span class="feature-chip">OKR integration</span>
+      <span class="feature-chip">Follow-up tasks</span>
+      <span class="feature-chip">Google Sync</span>
+    </div>
+    <a href="/" class="back-btn">← Back to WetzelWest</a>
+  </main>
+
+  <footer>
+    <p>Part of <a href="/">wetzelwest.com</a> &mdash; &copy; <span id="yr"></span> Josh Wetzel</p>
+  </footer>
+
+  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

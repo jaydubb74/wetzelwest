@@ -1,0 +1,4 @@
+# Cloudflare Pages redirect rules
+# Ensure clean URLs work without trailing slashes
+
+/wetzelcrm    /wetzelcrm/index.html    200

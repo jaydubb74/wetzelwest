@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WetzelWest — Learning to Build Digital Products</title>
+  <meta name="description" content="WetzelWest is a collection of digital projects by Josh Wetzel — exploring AI tools, sports tech, media, fitness, and CRM software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── NAV ────────────────────────────────────────────────────── -->
+  <header class="nav">
+    <a href="/" class="nav-logo">
+      <span class="nav-logo-mark">W</span>
+      <span class="nav-logo-text">WetzelWest</span>
+    </a>
+  </header>
+
+  <!-- ─── HERO ───────────────────────────────────────────────────── -->
+  <section class="hero">
+
+    <!-- Mountain SVG scene -->
+    <div class="hero-scene" aria-hidden="true">
+      <svg class="hero-svg" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Sky gradient: dusk looking west over the Cascades -->
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#0d1b2a" />
+            <stop offset="35%"  stop-color="#1b3a5c" />
+            <stop offset="65%"  stop-color="#c45c26" />
+            <stop offset="85%"  stop-color="#e8832a" />
+            <stop offset="100%" stop-color="#f5c26b" />
+          </linearGradient>
+          <!-- Distant ridge gradient -->
+          <linearGradient id="ridge-far" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#2e3f6e" />
+            <stop offset="100%" stop-color="#1a2545" />
+          </linearGradient>
+          <!-- Near peaks gradient -->
+          <linearGradient id="peaks" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#1d2d50" />
+            <stop offset="100%" stop-color="#0f1a30" />
+          </linearGradient>
+          <!-- Foreground forest gradient -->
+          <linearGradient id="forest" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#0e2318" />
+            <stop offset="100%" stop-color="#071410" />
+          </linearGradient>
+          <!-- Snow cap gradient -->
+          <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#dce8f0" />
+          </linearGradient>
+          <!-- Glow for sun near horizon -->
+          <radialGradient id="sun-glow" cx="0.72" cy="1" r="0.45">
+            <stop offset="0%"   stop-color="#ffcc55" stop-opacity="0.55" />
+            <stop offset="60%"  stop-color="#e8832a" stop-opacity="0.15" />
+            <stop offset="100%" stop-color="#e8832a" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <!-- Sky fill -->
+        <rect width="1440" height="600" fill="url(#sky)" />
+
+        <!-- Sun glow near horizon -->
+        <rect width="1440" height="600" fill="url(#sun-glow)" />
+
+        <!-- ── Distant foothills / lower Cascades range ── -->
+        <path fill="url(#ridge-far)" opacity="0.75"
+          d="M0,420 C80,390 160,380 240,395 C320,410 380,370 460,360
+             C540,350 600,365 680,355 C760,345 820,330 900,345
+             C980,360 1040,350 1120,360 C1200,370 1280,355 1360,365
+             L1440,360 L1440,600 L0,600 Z" />
+
+        <!-- ── Mt Bachelor: conical peak — rightmost (south) ── -->
+        <!-- Base shape -->
+        <path fill="url(#peaks)"
+          d="M1060,460 C1080,420 1115,350 1145,290 C1175,230 1185,210 1190,200
+             C1195,210 1210,230 1225,265 C1255,330 1280,390 1295,440 Z" />
+        <!-- Snow cap -->
+        <path fill="url(#snow)" opacity="0.92"
+          d="M1190,200 C1193,213 1202,228 1212,248 C1200,238 1187,230 1178,242
+             C1182,225 1188,212 1190,200 Z" />
+
+        <!-- ── North Sister: leftmost of three ── -->
+        <path fill="url(#peaks)"
+          d="M620,470 C640,435 665,380 690,320 C710,270 720,250 725,238
+             C730,250 742,272 758,315 C780,375 795,430 808,470 Z" />
+        <!-- Snow cap North Sister -->
+        <path fill="url(#snow)" opacity="0.9"
+          d="M725,238 C728,250 736,265 746,285 C735,275 723,270 717,280
+             C719,265 722,250 725,238 Z" />
+
+        <!-- ── Middle Sister: center, slightly lower ── -->
+        <path fill="url(#peaks)"
+          d="M780,475 C798,442 820,392 842,340 C860,298 868,278 872,266
+             C877,278 888,300 904,342 C924,392 938,444 950,475 Z" />
+        <!-- Snow cap Middle Sister -->
+        <path fill="url(#snow)" opacity="0.88"
+          d="M872,266 C875,278 882,294 893,314 C882,304 870,299 863,310
+             C866,295 869,280 872,266 Z" />
+
+        <!-- ── South Sister: rounded dome, most prominent ── -->
+        <path fill="url(#peaks)"
+          d="M930,468 C948,430 972,372 996,310 C1015,260 1022,238 1026,224
+             C1030,238 1040,260 1055,308 C1076,370 1090,432 1100,468 Z" />
+        <!-- Snow cap South Sister -->
+        <path fill="url(#snow)" opacity="0.9"
+          d="M1026,224 C1029,237 1037,254 1048,275 C1036,264 1022,260 1016,272
+             C1019,256 1022,240 1026,224 Z" />
+
+        <!-- Connecting ridgeline between peaks -->
+        <path fill="url(#peaks)" opacity="0.6"
+          d="M620,470 C660,455 700,448 740,450 C780,452 810,448 850,450
+             C890,452 920,448 960,452 C1000,456 1030,455 1060,460
+             L1295,440 L1295,480 L620,480 Z" />
+
+        <!-- ── Forested midground slopes ── -->
+        <path fill="url(#forest)"
+          d="M0,540
+             C60,510 120,495 180,505 C240,515 300,498 360,500
+             C420,502 470,490 530,492 C590,494 640,488 700,490
+             C760,492 820,485 880,490 C940,495 1000,488 1060,492
+             C1120,496 1180,490 1240,498 C1300,506 1370,495 1440,510
+             L1440,600 L0,600 Z" />
+
+        <!-- ── Foreground terrain / dark base ── -->
+        <path fill="#050d0a"
+          d="M0,570 C200,555 400,560 600,565 C800,570 1000,558 1200,563
+             L1440,568 L1440,600 L0,600 Z" />
+
+        <!-- Subtle atmospheric haze layer -->
+        <rect width="1440" height="600" fill="#c45c26" opacity="0.04" />
+      </svg>
+    </div>
+
+    <!-- Hero content overlay -->
+    <div class="hero-content">
+      <p class="hero-eyebrow">WetzelWest</p>
+      <h1 class="hero-headline">Learning to build<br />digital products.</h1>
+      <p class="hero-sub">A personal lab for building, shipping, and iterating on software ideas — from AI tools to sports media to fitness.</p>
+      <a href="#projects" class="hero-cta">Explore projects</a>
+    </div>
+
+    <!-- Scroll nudge -->
+    <div class="hero-scroll" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ─── PROJECTS ────────────────────────────────────────────────── -->
+  <section class="projects" id="projects">
+    <div class="projects-inner">
+
+      <div class="section-label">Projects</div>
+      <h2 class="section-title">Things being built.</h2>
+      <p class="section-sub">Each project is a different surface area — different problem, different stack, same underlying curiosity.</p>
+
+      <div class="cards">
+
+        <!-- 1stVibe.ai -->
+        <a href="https://1stvibe.ai" target="_blank" rel="noopener noreferrer" class="card card--ai">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" fill="currentColor" opacity="0.12"/>
+              <path d="M10 24 Q17 14 24 24 Q31 34 38 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M10 30 Q17 20 24 30 Q31 40 38 30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+              <path d="M10 18 Q17 8 24 18 Q31 28 38 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+              <circle cx="24" cy="24" r="3" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tag">AI Education</div>
+            <h3 class="card-title">1stVibe.ai</h3>
+            <p class="card-desc">Teaching professionals how to build software</p>
+          </div>
+          <div class="card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- Paffl.com -->
+        <a href="https://paffl.com" target="_blank" rel="noopener noreferrer" class="card card--sports">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" fill="currentColor" opacity="0.12"/>
+              <ellipse cx="24" cy="24" rx="14" ry="9" stroke="currentColor" stroke-width="2.5" fill="none"/>
+              <line x1="10" y1="24" x2="38" y2="24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="19" y1="15.5" x2="19" y2="32.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="24" y1="15" x2="24" y2="33" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="29" y1="15.5" x2="29" y2="32.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tag">Sports Tech · Prototype</div>
+            <h3 class="card-title">Paffl.com</h3>
+            <p class="card-desc">Fantasy football league management prototype</p>
+          </div>
+          <div class="card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- FSCollective.com -->
+        <a href="https://fscollective.com" target="_blank" rel="noopener noreferrer" class="card card--media">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" fill="currentColor" opacity="0.12"/>
+              <rect x="19" y="10" width="10" height="20" rx="5" stroke="currentColor" stroke-width="2.5" fill="none"/>
+              <path d="M14 26c0 5.523 4.477 10 10 10s10-4.477 10-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <line x1="24" y1="36" x2="24" y2="42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="18" y1="42" x2="30" y2="42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tag">Podcast · Media</div>
+            <h3 class="card-title">FSCollective.com</h3>
+            <p class="card-desc">An opinionated fantasy sports podcast</p>
+          </div>
+          <div class="card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- LiftWithErin.com -->
+        <a href="https://liftwitherin.com" target="_blank" rel="noopener noreferrer" class="card card--fitness">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" fill="currentColor" opacity="0.12"/>
+              <line x1="12" y1="24" x2="36" y2="24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="7" y="19" width="5" height="10" rx="2" fill="currentColor" opacity="0.8"/>
+              <rect x="36" y="19" width="5" height="10" rx="2" fill="currentColor" opacity="0.8"/>
+              <rect x="12" y="20.5" width="4" height="7" rx="1.5" fill="currentColor"/>
+              <rect x="32" y="20.5" width="4" height="7" rx="1.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tag">Health &amp; Fitness</div>
+            <h3 class="card-title">LiftWithErin.com</h3>
+            <p class="card-desc">A health and fitness coaching business</p>
+          </div>
+          <div class="card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+        <!-- WetzelCRM -->
+        <a href="/wetzelcrm" class="card card--crm">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" fill="currentColor" opacity="0.12"/>
+              <rect x="8" y="12" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+              <rect x="26" y="12" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+              <rect x="8" y="26" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+              <rect x="26" y="26" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+              <line x1="15" y1="17" x2="33" y2="17" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
+              <line x1="15" y1="31" x2="33" y2="31" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tag">CRM · Internal Tool</div>
+            <h3 class="card-title">WetzelCRM</h3>
+            <p class="card-desc">A custom-built CRM for managing contacts and pipelines</p>
+          </div>
+          <div class="card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ──────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-logo">WetzelWest</span>
+      <span class="footer-copy">&copy; <span id="year"></span> Josh Wetzel. Building in Oregon.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for the anchor link
+    document.querySelector('.hero-cta').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Nav background on scroll
+    const nav = document.querySelector('.nav');
+    const heroEl = document.querySelector('.hero');
+    function updateNav() {
+      const heroBottom = heroEl.getBoundingClientRect().bottom;
+      nav.classList.toggle('nav--scrolled', heroBottom <= 64);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+  </script>
+</body>
+</html>
