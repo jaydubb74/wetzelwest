@@ -140,17 +140,22 @@
       btn.textContent = 'Signing in...';
       errDiv.style.display = 'none';
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       try {
         const loginUrl = CRM_SERVER ? CRM_SERVER + '/api/login' : '/api/login';
         const response = await fetch(loginUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
+          signal: controller.signal,
           body: JSON.stringify({
             username: document.getElementById('username').value,
             password: document.getElementById('password').value
           })
         });
+        clearTimeout(timeoutId);
 
         const data = await response.json();
 
@@ -162,7 +167,15 @@
           errDiv.style.display = 'block';
         }
       } catch (error) {
-        errDiv.textContent = 'Connection error. Please try again.';
+        clearTimeout(timeoutId);
+        console.error('[WetzelCRM] Login fetch failed:', error);
+        if (error.name === 'AbortError') {
+          errDiv.textContent = 'Connection timed out. The CRM server may be offline.';
+        } else {
+          // Most likely cause: CORS error (server missing Access-Control-Allow-Origin /
+          // Access-Control-Allow-Credentials headers) or CRM server is unreachable.
+          errDiv.textContent = 'Connection error. Please try again.';
+        }
         errDiv.style.display = 'block';
       }
 
