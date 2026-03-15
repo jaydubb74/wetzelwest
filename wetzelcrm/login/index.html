@@ -156,6 +156,14 @@
         });
         clearTimeout(timeoutId);
 
+        if (response.status === 502 || response.status === 503 || response.status === 504) {
+          errDiv.textContent = 'CRM server is offline. Please try again later.';
+          errDiv.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+          return;
+        }
+
         const data = await response.json();
 
         if (response.ok && data.success) {
@@ -169,10 +177,8 @@
         clearTimeout(timeoutId);
         console.error('[WetzelCRM] Login fetch failed:', error);
         if (error.name === 'AbortError') {
-          errDiv.textContent = 'Connection timed out. The CRM server may be offline.';
+          errDiv.textContent = 'CRM server is offline or not responding.';
         } else {
-          // Most likely cause: CORS error (server missing Access-Control-Allow-Origin /
-          // Access-Control-Allow-Credentials headers) or CRM server is unreachable.
           errDiv.textContent = 'Connection error. Please try again.';
         }
         errDiv.style.display = 'block';
