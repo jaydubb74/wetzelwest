@@ -1,0 +1,8 @@
+{
+  "name": "wetzelwest",
+  "compatibility_date": "2026-03-15",
+  "main": "worker.js",
+  "assets": {
+    "directory": "./"
+  }
+}
