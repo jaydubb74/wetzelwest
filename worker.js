@@ -10,7 +10,14 @@ export default {
         body: request.method !== 'GET' && request.method !== 'HEAD' ? request.body : undefined,
         redirect: 'follow',
       });
-      return fetch(proxiedRequest);
+      try {
+        return await fetch(proxiedRequest);
+      } catch {
+        return new Response(JSON.stringify({ error: 'CRM server is unreachable' }), {
+          status: 502,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     return env.ASSETS.fetch(request);
