@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WetzelCRM</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      width: 360px;
+      background: #fff;
+      color: #1a1a1a;
+    }
+
+    .header {
+      background: #1e6fcc;
+      color: #fff;
+      padding: 10px 14px;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title { display: flex; align-items: center; gap: 6px; }
+
+    .body { padding: 12px 14px; max-height: 520px; overflow-y: auto; }
+
+    .alert {
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+    .alert-error { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .alert-warn  { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+    .alert-info  { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+
+    .linkedin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #0a66c2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 10px;
+      font-family: inherit;
+    }
+    .linkedin-btn:hover { background: #004182; }
+    .linkedin-btn:disabled { background: #6b7280; cursor: not-allowed; }
+
+    .restore-note {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .form-group { margin-bottom: 10px; }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+    .form-group label .req { color: #dc2626; margin-left: 2px; }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #1e6fcc; }
+
+    .new-company-hint {
+      font-size: 11px;
+      color: #059669;
+      margin-top: 3px;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .btn-primary {
+      padding: 7px 18px;
+      background: #1e6fcc;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary:hover { background: #1558a8; }
+    .btn-primary:disabled { background: #9ca3af; cursor: not-allowed; }
+
+    .btn-secondary {
+      padding: 7px 14px;
+      background: transparent;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-secondary:hover { border-color: #9ca3af; color: #374151; }
+
+    #statusMsg {
+      padding: 6px 14px;
+      font-size: 12px;
+      display: none;
+    }
+    #statusMsg.success { color: #065f46; background: #d1fae5; }
+    #statusMsg.error   { color: #991b1b; background: #fee2e2; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="16" height="16" rx="3" fill="white" fill-opacity="0.25"/>
+      <text x="4" y="12" font-size="10" font-weight="bold" fill="white">W</text>
+    </svg>
+    Personal CRM
+  </div>
+</div>
+
+<div class="body" id="mainBody">
+
+  <div id="errorBanner" class="alert alert-warn" style="display:none;"></div>
+  <div id="infoBanner" class="alert alert-info" style="display:none;"></div>
+
+  <button class="linkedin-btn" id="linkedinBtn" onclick="fillFromLinkedIn()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    From LinkedIn
+  </button>
+
+  <div id="restoreNote" class="restore-note" style="display:none;">
+    📝 <em>Form data restored from previous session</em>
+  </div>
+
+  <div class="form-group">
+    <label for="firstName">First Name <span class="req">*</span></label>
+    <input type="text" id="firstName" placeholder="First name" />
+  </div>
+
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" placeholder="Last name" />
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="email@example.com" />
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Phone</label>
+    <input type="tel" id="phone" placeholder="Phone number" />
+  </div>
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" id="title" placeholder="Job title" />
+  </div>
+
+  <div class="form-group">
+    <label for="company">Company <span class="req">*</span></label>
+    <select id="company">
+      <option value="">-- Select a company --</option>
+    </select>
+    <div class="new-company-hint" id="newCompanyHint" style="display:none;">+ Will create new company</div>
+  </div>
+
+  <div class="form-group" id="newCompanyGroup" style="display:none;">
+    <label for="newCompany">Or Enter New Company Name</label>
+    <input type="text" id="newCompany" placeholder="New company name" />
+  </div>
+
+  <div class="form-group">
+    <label for="relationshipType">Relationship Type <span class="req">*</span></label>
+    <select id="relationshipType">
+      <option value="">-- Select relationship type --</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="notes">Notes</label>
+    <textarea id="notes" rows="3" placeholder="Any notes about this contact..."></textarea>
+  </div>
+
+</div>
+
+<div id="statusMsg"></div>
+
+<div class="footer">
+  <button class="btn-secondary" id="clearBtn" onclick="clearForm()">Clear</button>
+  <button class="btn-primary" id="saveBtn" onclick="saveContact()">Save Contact</button>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
