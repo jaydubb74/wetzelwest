@@ -1,21 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "WetzelCRM",
-  "version": "1.0.0",
+  "name": "Personal CRM",
+  "version": "1.1.0",
   "description": "Extract LinkedIn contact info and save to WetzelCRM",
   "permissions": [
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "host_permissions": [
+    "https://wetzelwest.com/*",
     "https://crm.wetzelwest.com/*",
     "https://www.linkedin.com/*",
     "https://linkedin.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "WetzelCRM"
+    "default_title": "Personal CRM"
   },
   "content_scripts": [
     {
