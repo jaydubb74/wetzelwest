@@ -5,6 +5,7 @@
   "description": "Extract LinkedIn contact info and save to WetzelCRM",
   "permissions": [
     "activeTab",
+    "scripting",
     "storage"
   ],
   "host_permissions": [

@@ -128,9 +128,32 @@ async function fillFromLinkedIn() {
       return;
     }
 
-    const profile = await chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_PROFILE' });
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: () => {
+        const text = (sel) => document.querySelector(sel)?.innerText?.trim() || '';
+        const attr = (sel, a) => document.querySelector(sel)?.getAttribute(a)?.trim() || '';
 
-    if (!profile || profile.error) {
+        const fullName  = text('h1');
+        const nameParts = fullName.split(/\s+/);
+        const firstName = nameParts[0] || '';
+        const lastName  = nameParts.slice(1).join(' ') || '';
+
+        const title   = text('.text-body-medium');
+        const company = text('.pv-text-details__right-panel span[aria-hidden="true"]') ||
+                        text('.inline-show-more-text') || '';
+
+        const email = text('a[href^="mailto:"]') ||
+                      attr('a[href^="mailto:"]', 'href').replace('mailto:', '');
+        const phone = text('a[href^="tel:"]') ||
+                      attr('a[href^="tel:"]', 'href').replace('tel:', '');
+
+        return { firstName, lastName, title, company, email, phone };
+      },
+    });
+
+    const profile = results?.[0]?.result;
+    if (!profile) {
       showInfo('Could not extract profile data from this page.');
       return;
     }
