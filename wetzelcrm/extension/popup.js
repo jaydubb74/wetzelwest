@@ -128,13 +128,9 @@ async function fillFromLinkedIn() {
       return;
     }
 
-    const results = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: extractLinkedInProfile,
-    });
+    const profile = await chrome.tabs.sendMessage(tab.id, { type: 'EXTRACT_PROFILE' });
 
-    const profile = results?.[0]?.result;
-    if (!profile) {
+    if (!profile || profile.error) {
       showInfo('Could not extract profile data from this page.');
       return;
     }
@@ -172,21 +168,6 @@ async function fillFromLinkedIn() {
     btn.disabled = false;
     btn.textContent = 'From LinkedIn';
   }
-}
-
-// Runs inside the LinkedIn page tab
-function extractLinkedInProfile() {
-  const text = (sel) => document.querySelector(sel)?.innerText?.trim() || '';
-
-  const nameParts = text('h1').split(' ');
-  const firstName = nameParts[0] || '';
-  const lastName  = nameParts.slice(1).join(' ') || '';
-
-  const title   = text('.text-body-medium');
-  const company = text('.pv-text-details__right-panel .inline-show-more-text') ||
-                  text('[data-field="experience_company_name"]');
-
-  return { firstName, lastName, title, company, email: '', phone: '' };
 }
 
 // ── Save contact ──────────────────────────────────────────────────────────────
