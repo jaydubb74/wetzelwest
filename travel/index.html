@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Planner — WetzelWest</title>
+  <meta name="description" content="Wetzel family travel itineraries." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-ink:       #0f1a2a;
+      --color-ink-80:    #1e2e42;
+      --color-muted:     #6b7e96;
+      --color-border:    #e2e8f0;
+      --color-surface:   #f8fafc;
+      --color-white:     #ffffff;
+      --color-amber:     #c27a3a;
+      --color-amber-bg:  #fdf6ee;
+      --font-sans:       'Inter', system-ui, sans-serif;
+      --font-serif:      'Playfair Display', Georgia, serif;
+      --max-width:       1160px;
+      --gutter:          clamp(1.25rem, 5vw, 2.5rem);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-ink);
+      background: var(--color-surface);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100dvh;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1.1rem var(--gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--color-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--color-ink); }
+
+    .nav-back svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .nav-divider {
+      color: var(--color-border);
+      font-size: 1.2rem;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .nav-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-ink);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-lock {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-amber);
+      background: var(--color-amber-bg);
+      border: 1px solid rgba(194, 122, 58, 0.2);
+      border-radius: 100px;
+      padding: 0.3rem 0.75rem;
+    }
+
+    .nav-lock svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* ── PASSWORD GATE ── */
+    .gate-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--color-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--gutter);
+    }
+
+    .gate-overlay.hidden { display: none; }
+
+    .gate-box {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.08);
+    }
+
+    .gate-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--color-amber-bg);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      color: var(--color-amber);
+    }
+
+    .gate-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .gate-box h1 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .gate-box p {
+      font-size: 0.9rem;
+      color: var(--color-muted);
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+
+    .gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 1rem;
+      font-family: var(--font-sans);
+      border: 1.5px solid var(--color-border);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+      text-align: center;
+      letter-spacing: 0.06em;
+      color: var(--color-ink);
+      background: var(--color-surface);
+    }
+
+    .gate-input:focus {
+      border-color: var(--color-amber);
+    }
+
+    .gate-input.error {
+      border-color: #e53e3e;
+      background: #fff5f5;
+    }
+
+    .gate-btn {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      background: var(--color-ink);
+      color: var(--color-white);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .gate-btn:hover {
+      background: var(--color-ink-80);
+      transform: translateY(-1px);
+    }
+
+    .gate-error {
+      font-size: 0.82rem;
+      color: #e53e3e;
+      display: none;
+    }
+
+    .gate-error.visible { display: block; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: clamp(3rem, 6vw, 5rem) var(--gutter);
+    }
+
+    .page-header {
+      margin-bottom: 3rem;
+    }
+
+    .page-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+      font-weight: 700;
+      color: var(--color-ink);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-sub {
+      font-size: 1.05rem;
+      color: var(--color-muted);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ── ITINERARY CARDS ── */
+    .itineraries {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .itin-card {
+      display: block;
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--color-ink);
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(.22,.68,0,1.2), box-shadow 0.25s ease, border-color 0.2s;
+      position: relative;
+    }
+
+    .itin-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.10);
+      border-color: transparent;
+    }
+
+    .itin-card-banner {
+      height: 140px;
+      background: linear-gradient(135deg, #1a3a2e 0%, #2d6a4f 40%, #c27a3a 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.25rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .itin-card-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200'%3E%3Cpath fill='rgba(255,255,255,0.04)' d='M0,100 C100,60 200,140 300,100 C400,60 500,140 600,100 C700,60 750,120 800,100 L800,200 L0,200 Z'/%3E%3C/svg%3E") no-repeat bottom;
+      background-size: cover;
+    }
+
+    .itin-card-route {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .route-city {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      border-radius: 6px;
+      padding: 0.25rem 0.6rem;
+    }
+
+    .route-arrow {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.8rem;
+    }
+
+    .itin-card-body {
+      padding: 1.5rem;
+    }
+
+    .itin-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-amber);
+      margin-bottom: 0.5rem;
+    }
+
+    .itin-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+
+    .itin-desc {
+      font-size: 0.88rem;
+      color: var(--color-muted);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+
+    .itin-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .itin-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--color-muted);
+    }
+
+    .itin-meta-item svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .itin-card-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .itin-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2d6a3f;
+      background: rgba(45,106,63,0.1);
+      border-radius: 100px;
+      padding: 0.25rem 0.75rem;
+    }
+
+    .itin-arrow {
+      color: var(--color-border);
+      width: 24px;
+      height: 24px;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .itin-card:hover .itin-arrow {
+      color: var(--color-amber);
+      transform: translateX(3px);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--color-ink);
+      padding: 1.75rem var(--gutter);
+      margin-top: 5rem;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-logo {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--color-white);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .itin-card, .itin-arrow, .gate-btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── PASSWORD GATE ── -->
+  <div class="gate-overlay" id="gate">
+    <div class="gate-box">
+      <div class="gate-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <h1>Travel Planner</h1>
+      <p>Family trips, itineraries &amp; adventures. Enter the password to continue.</p>
+      <form class="gate-form" id="gate-form">
+        <input
+          class="gate-input"
+          id="gate-input"
+          type="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          autofocus
+        />
+        <p class="gate-error" id="gate-error">Incorrect password — try again.</p>
+        <button class="gate-btn" type="submit">Unlock</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── NAV ── -->
+  <header class="nav">
+    <div class="nav-left">
+      <a href="/" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        WetzelWest
+      </a>
+      <span class="nav-divider">/</span>
+      <span class="nav-title">Travel Planner</span>
+    </div>
+    <div class="nav-lock">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Private
+    </div>
+  </header>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+    <div class="page-header">
+      <p class="page-eyebrow">The Wetzel Family</p>
+      <h1 class="page-title">Trip Itineraries</h1>
+      <p class="page-sub">Detailed day-by-day plans, restaurants, stays, and tips for every adventure.</p>
+    </div>
+
+    <div class="itineraries">
+
+      <!-- Southern Roadtrip 2026 -->
+      <a href="/travel/southern-roadtrip-2026" class="itin-card">
+        <div class="itin-card-banner">
+          <div class="itin-card-route">
+            <span class="route-city">ATL</span>
+            <span class="route-arrow">→</span>
+            <span class="route-city">Athens</span>
+            <span class="route-arrow">→</span>
+            <span class="route-city">Charleston</span>
+            <span class="route-arrow">→</span>
+            <span class="route-city">DC</span>
+          </div>
+        </div>
+        <div class="itin-card-body">
+          <div class="itin-tag">Road Trip · April 2026</div>
+          <h2 class="itin-title">Southern Roadtrip 2026</h2>
+          <p class="itin-desc">Ten days through the South — college tours, Lowcountry beaches, historic Charleston, and the National Mall.</p>
+          <div class="itin-meta">
+            <span class="itin-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              April 4–13, 2026
+            </span>
+            <span class="itin-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+              10 Days
+            </span>
+            <span class="itin-meta-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              5 Cities
+            </span>
+          </div>
+        </div>
+        <div class="itin-card-footer">
+          <span class="itin-status">Upcoming</span>
+          <svg class="itin-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="footer-logo">WetzelWest</a>
+      <span class="footer-copy">&copy; <span id="year"></span> Josh Wetzel. Building in Oregon.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── Password gate ──
+    // Change this password to whatever you'd like.
+    const PASSWORD = 'wetzel2026';
+    const SESSION_KEY = 'ww_travel_unlocked';
+
+    const gate = document.getElementById('gate');
+    const form = document.getElementById('gate-form');
+    const input = document.getElementById('gate-input');
+    const errorEl = document.getElementById('gate-error');
+
+    function unlock() {
+      gate.classList.add('hidden');
+      sessionStorage.setItem(SESSION_KEY, '1');
+    }
+
+    // Already unlocked this session?
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      unlock();
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (input.value === PASSWORD) {
+        errorEl.classList.remove('visible');
+        input.classList.remove('error');
+        unlock();
+      } else {
+        input.classList.add('error');
+        errorEl.classList.add('visible');
+        input.value = '';
+        input.focus();
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
 # Cloudflare Pages redirect rules
 # Ensure clean URLs work without trailing slashes
 
-/wetzelcrm         /wetzelcrm/index.html         200
-/wetzelcrm/login   /wetzelcrm/login/index.html   200
+/wetzelcrm                      /wetzelcrm/index.html                              200
+/wetzelcrm/login                /wetzelcrm/login/index.html                        200
+/travel                         /travel/index.html                                 200
+/travel/southern-roadtrip-2026  /travel/southern-roadtrip-2026/index.html          200
