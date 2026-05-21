@@ -33,6 +33,7 @@
   --accent-fitness:    #0e8c8c;   /* teal — health */
   --accent-crm:        #1e6fcc;   /* blue — software */
   --accent-travel:     #c27a3a;   /* amber — travel */
+  --accent-wellness:   #3d9e6b;   /* emerald — wellness */
 
   /* Typography */
   --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
@@ -364,13 +365,15 @@ body {
 .card--fitness  { --accent: var(--accent-fitness); }
 .card--crm      { --accent: var(--accent-crm); }
 .card--travel   { --accent: var(--accent-travel); }
+.card--wellness { --accent: var(--accent-wellness); }
 
-.card--ai::before     { background: var(--accent-ai); }
-.card--sports::before { background: var(--accent-sports); }
-.card--media::before  { background: var(--accent-media); }
-.card--fitness::before{ background: var(--accent-fitness); }
-.card--crm::before    { background: var(--accent-crm); }
-.card--travel::before { background: var(--accent-travel); }
+.card--ai::before      { background: var(--accent-ai); }
+.card--sports::before  { background: var(--accent-sports); }
+.card--media::before   { background: var(--accent-media); }
+.card--fitness::before { background: var(--accent-fitness); }
+.card--crm::before     { background: var(--accent-crm); }
+.card--travel::before  { background: var(--accent-travel); }
+.card--wellness::before{ background: var(--accent-wellness); }
 
 /* Card icon */
 .card-icon {
