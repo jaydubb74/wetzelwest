@@ -1241,7 +1241,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .grid-table .total-score {
             font-size: 24px;
             font-weight: 600;
-            color: var(--wz-accent);
+            color: white;
             margin: 10px 0;
         }
 
@@ -6261,10 +6261,14 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             el.innerHTML = gtmHistory.map(h => '<div class="gtm-hist-card" onclick="gtmShowHistEntry(' + h.id + ')"><div class="gtm-hist-meta"><span class="gtm-hist-title">' + h.meeting + '</span><span class="gtm-hist-chip ' + (h.type==='prep'?'chip-prep':'chip-followup') + '">' + (h.type==='prep'?'prep':'follow-up') + '</span><span class="gtm-hist-time">' + h.timestamp + '</span></div><div class="gtm-hist-preview">' + h.text.slice(0,140) + '…</div></div>').join('');
         }
 
+        window.gtmClearHistDetail = function() {
+            document.getElementById('gtm-hist-detail').innerHTML = '';
+        };
+
         window.gtmShowHistEntry = function(id) {
             const h = gtmHistory.find(x => x.id===id); if (!h) return;
             const el = document.getElementById('gtm-hist-detail');
-            el.innerHTML = '<div class="gtm-result-panel"><div class="gtm-rp-head"><span class="gtm-rp-title">' + h.meeting + ' — ' + (h.type==='prep'?'prep':'follow-up') + ' · ' + h.timestamp + '</span><button class="gtm-rp-close" onclick="document.getElementById(\'gtm-hist-detail\').innerHTML=\'\'">×</button></div><div class="gtm-rp-content">' + h.text + '</div></div>';
+            el.innerHTML = '<div class="gtm-result-panel"><div class="gtm-rp-head"><span class="gtm-rp-title">' + h.meeting + ' — ' + (h.type==='prep'?'prep':'follow-up') + ' · ' + h.timestamp + '</span><button class="gtm-rp-close" onclick="gtmClearHistDetail()">×</button></div><div class="gtm-rp-content">' + h.text + '</div></div>';
             el.scrollIntoView({behavior:'smooth',block:'nearest'});
         };
 
