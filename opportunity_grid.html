@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Opportunity Decision Grid</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary { background: #667eea; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+
+        .grid-wrapper {
+            overflow-x: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .opportunity-grid {
+            display: table;
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 1000px;
+        }
+
+        .grid-row {
+            display: table-row;
+        }
+
+        .grid-cell {
+            display: table-cell;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+
+        .grid-cell.header {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .grid-cell.row-label {
+            background: #f8f9fa;
+            font-weight: 500;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            min-width: 250px;
+        }
+
+        .grid-cell.score-cell {
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .grid-cell.score-cell:hover {
+            background: #f0f0f0;
+        }
+
+        .grid-cell.total-score {
+            background: #1976d2;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .checkbox-icon {
+            font-size: 20px;
+            color: #28a745;
+        }
+
+        .company-header {
+            background: #667eea !important;
+            color: white;
+            font-size: 16px;
+            padding: 15px !important;
+        }
+
+        .company-header .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company-header .company-role {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .criteria-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .criteria-score {
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+            margin-left: 5px;
+            opacity: 0.6;
+        }
+
+        .edit-icon:hover {
+            opacity: 1;
+        }
+
+        .delete-icon {
+            cursor: pointer;
+            color: #dc3545;
+            margin-left: 5px;
+            opacity: 0.6;
+        }
+
+        .delete-icon:hover {
+            opacity: 1;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Opportunity Decision Grid</h1>
+
+    <div class="controls">
+        <button onclick="addCompany()" class="btn btn-primary">+ Add Company</button>
+        <button onclick="addCriteria()" class="btn btn-success">+ Add Criteria</button>
+        <button onclick="loadGrid()" class="btn">🔄 Refresh</button>
+    </div>
+
+    <div class="grid-wrapper">
+        <div id="grid" class="opportunity-grid"></div>
+    </div>
+
+    <!-- Add Company Modal -->
+    <div id="addCompanyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Company</h2>
+                <button class="close-btn" onclick="closeModal('addCompanyModal')">&times;</button>
+            </div>
+            <form onsubmit="saveCompany(event)">
+                <div class="form-group">
+                    <label>Company Name *</label>
+                    <input type="text" id="company-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Opportunity Stage 🎯</label>
+                    <select id="company-opportunity-stage" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="Inquiry">Inquiry</option>
+                        <option value="Initial Conversation">Initial Conversation</option>
+                        <option value="Formal Interviews">Formal Interviews</option>
+                        <option value="Final Stages">Final Stages</option>
+                        <option value="Offer">Offer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>LinkedIn Profile</label>
+                    <input type="url" id="company-linkedin" placeholder="https://linkedin.com/company/...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="company-location">
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" id="company-role">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stage</label>
+                        <input type="text" id="company-stage" placeholder="Series B, Series C">
+                    </div>
+                    <div class="form-group">
+                        <label>Employees</label>
+                        <input type="number" id="company-employees">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Raised</label>
+                        <input type="text" id="company-raised" placeholder="$75M">
+                    </div>
+                    <div class="form-group">
+                        <label>Revenue</label>
+                        <input type="text" id="company-revenue" placeholder="$20M">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cash Comp</label>
+                        <input type="number" id="company-cash">
+                    </div>
+                    <div class="form-group">
+                        <label>Base Salary</label>
+                        <input type="number" id="company-base">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="closeModal('addCompanyModal')" class="btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Company</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Criteria Modal -->
+    <div id="addCriteriaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Scoring Criteria</h2>
+                <button class="close-btn" onclick="closeModal('addCriteriaModal')">&times;</button>
+            </div>
+            <form onsubmit="saveCriteria(event)">
+                <div class="form-group">
+                    <label>Criteria Name *</label>
+                    <input type="text" id="criteria-name" required placeholder="e.g., Cash Comp (Base + Bonus)">
+                </div>
+                <div class="form-group">
+                    <label>Max Score *</label>
+                    <input type="number" id="criteria-score" value="10" min="1" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="criteria-category">
+                        <option>Personal Fit</option>
+                        <option>Compensation</option>
+                        <option>Company</option>
+                        <option>Work Life</option>
+                        <option>Career Growth</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="closeModal('addCriteriaModal')" class="btn">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Criteria</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let gridData = { companies: [], criteria: [], scores: {} };
+
+        async function loadGrid() {
+            try {
+                const response = await fetch(`${API_BASE}/api/opportunity-grid`);
+                gridData = await response.json();
+                renderGrid();
+            } catch (error) {
+                console.error('Error loading grid:', error);
+            }
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            const { companies, criteria, scores } = gridData;
+
+            let html = '';
+
+            // Header row with company names and scores
+            html += '<div class="grid-row">';
+            html += '<div class="grid-cell header row-label">Criteria</div>';
+
+            companies.forEach(company => {
+                const totalScore = calculateCompanyScore(company.grid_company_id);
+                html += `
+                    <div class="grid-cell company-header">
+                        <div class="company-name">${company.company_name}</div>
+                        ${company.opportunity_stage ? `<div style="font-size: 11px; opacity: 0.85; margin-top: 3px;">🎯 ${company.opportunity_stage}</div>` : ''}
+                        ${company.role ? `<div class="company-role">${company.role}</div>` : ''}
+                        <div style="margin-top: 10px; font-size: 24px; font-weight: bold;">${totalScore}</div>
+                        <button onclick="deleteCompany(${company.grid_company_id})" style="margin-top: 5px; padding: 5px 10px; background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 3px; cursor: pointer;">Delete</button>
+                    </div>
+                `;
+            });
+            html += '</div>';
+
+            // Criteria rows
+            criteria.forEach(crit => {
+                html += '<div class="grid-row">';
+                html += `
+                    <div class="grid-cell row-label">
+                        <div class="criteria-label">
+                            <span>${crit.criteria_name}</span>
+                            <span class="criteria-score">${crit.max_score}</span>
+                        </div>
+                    </div>
+                `;
+
+                companies.forEach(company => {
+                    const hasCheck = scores[company.grid_company_id]?.[crit.criteria_id] || 0;
+                    html += `
+                        <div class="grid-cell score-cell" onclick="toggleScore(${company.grid_company_id}, ${crit.criteria_id})">
+                            ${hasCheck ? '<span class="checkbox-icon">✓</span>' : ''}
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function calculateCompanyScore(companyId) {
+            const { criteria, scores } = gridData;
+            let total = 0;
+
+            criteria.forEach(crit => {
+                if (scores[companyId]?.[crit.criteria_id]) {
+                    total += crit.max_score;
+                }
+            });
+
+            return total;
+        }
+
+        async function toggleScore(companyId, criteriaId) {
+            try {
+                await fetch(`${API_BASE}/api/toggle-grid-score`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ grid_company_id: companyId, criteria_id: criteriaId })
+                });
+                await loadGrid();
+            } catch (error) {
+                console.error('Error toggling score:', error);
+            }
+        }
+
+        function addCompany() {
+            document.getElementById('addCompanyModal').style.display = 'block';
+        }
+
+        function addCriteria() {
+            document.getElementById('addCriteriaModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        async function saveCompany(event) {
+            event.preventDefault();
+
+            const data = {
+                company_name: document.getElementById('company-name').value,
+                opportunity_stage: document.getElementById('company-opportunity-stage').value,
+                company_linkedin: document.getElementById('company-linkedin').value,
+                location: document.getElementById('company-location').value,
+                role: document.getElementById('company-role').value,
+                stage: document.getElementById('company-stage').value,
+                employees: document.getElementById('company-employees').value,
+                raised_amount: document.getElementById('company-raised').value,
+                revenue: document.getElementById('company-revenue').value,
+                cash_comp: document.getElementById('company-cash').value,
+                base_salary: document.getElementById('company-base').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/add-grid-company`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    closeModal('addCompanyModal');
+                    event.target.reset();
+                    await loadGrid();
+                }
+            } catch (error) {
+                console.error('Error saving company:', error);
+            }
+        }
+
+        async function saveCriteria(event) {
+            event.preventDefault();
+
+            const data = {
+                criteria_name: document.getElementById('criteria-name').value,
+                max_score: parseInt(document.getElementById('criteria-score').value),
+                category: document.getElementById('criteria-category').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/add-grid-criteria`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    closeModal('addCriteriaModal');
+                    event.target.reset();
+                    await loadGrid();
+                }
+            } catch (error) {
+                console.error('Error saving criteria:', error);
+            }
+        }
+
+        async function deleteCompany(companyId) {
+            if (!confirm('Delete this company from the grid?')) return;
+
+            try {
+                await fetch(`${API_BASE}/api/delete-grid-company`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ grid_company_id: companyId })
+                });
+                await loadGrid();
+            } catch (error) {
+                console.error('Error deleting company:', error);
+            }
+        }
+
+        // Load grid on page load
+        loadGrid();
+    </script>
+</body>
+</html>
