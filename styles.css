@@ -365,6 +365,13 @@ body {
 .card--wellness::before{ background: var(--accent-wellness); }
 .card--coffee::before  { background: var(--accent-coffee); }
 
+.card--placeholder {
+  --accent: #9ca3af;
+  opacity: 0.5;
+  pointer-events: none;
+  border-style: dashed;
+}
+
 /* Card icon */
 .card-icon {
   width: 48px;
