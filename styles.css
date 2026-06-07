@@ -34,6 +34,7 @@
   --accent-crm:        #1e6fcc;   /* blue — software */
   --accent-travel:     #c27a3a;   /* amber — travel */
   --accent-wellness:   #3d9e6b;   /* emerald — wellness */
+  --accent-coffee:     #6f3e1e;   /* espresso — coffee */
 
   /* Typography */
   --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
@@ -366,6 +367,7 @@ body {
 .card--crm      { --accent: var(--accent-crm); }
 .card--travel   { --accent: var(--accent-travel); }
 .card--wellness { --accent: var(--accent-wellness); }
+.card--coffee   { --accent: var(--accent-coffee); }
 
 .card--ai::before      { background: var(--accent-ai); }
 .card--sports::before  { background: var(--accent-sports); }
@@ -374,6 +376,7 @@ body {
 .card--crm::before     { background: var(--accent-crm); }
 .card--travel::before  { background: var(--accent-travel); }
 .card--wellness::before{ background: var(--accent-wellness); }
+.card--coffee::before  { background: var(--accent-coffee); }
 
 /* Card icon */
 .card-icon {
