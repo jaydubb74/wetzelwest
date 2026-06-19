@@ -319,12 +319,12 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
     <title>Wetzel CRM - Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #F5F5F5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0F172A;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -333,90 +333,110 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
         .login-container {
             background: #FFFFFF;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
             text-align: center;
-            border: 1px solid #E5E5E5;
+            border: 1px solid rgba(226, 232, 240, 0.6);
         }
         .login-logo {
-            width: 180px;
+            width: 150px;
             height: auto;
-            margin-bottom: 30px;
+            margin-bottom: 1.5rem;
+        }
+        .login-card-header {
+            margin-bottom: 1.5rem;
+        }
+        .login-card-header h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0F172A;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+        .login-card-header p {
+            font-size: 0.82rem;
+            color: #64748B;
         }
         .login-form { text-align: left; }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
         }
         .form-group label {
             display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: #2E2E2E;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: #0F172A;
+            font-size: 0.8rem;
+            letter-spacing: 0.01em;
         }
         .form-group input {
             width: 100%;
-            padding: 0 10px;
-            height: 40px;
-            border: 1px solid #E5E5E5;
-            border-radius: 4px;
-            font-size: 13px;
+            padding: 0.65rem 0.9rem;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-family: inherit;
-            transition: border-color 0.15s;
-            background: #FFFFFF;
-            color: #1A1A1A;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            background: #F4F6F8;
+            color: #0F172A;
         }
-        .form-group input::placeholder { color: #BBBBBB; }
+        .form-group input::placeholder { color: #94A3B8; }
         .form-group input:focus {
             outline: none;
-            border-color: #4A90D9;
-            border-width: 1.5px;
+            border-color: #3B82F6;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
         }
         .login-btn {
             width: 100%;
-            padding: 0 16px;
-            height: 40px;
-            background: #4A90D9;
+            padding: 0.75rem 1rem;
+            background: #3B82F6;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 13px;
+            border-radius: 10px;
+            font-size: 0.9rem;
             font-weight: 600;
             font-family: inherit;
             cursor: pointer;
-            transition: background 0.15s;
+            margin-top: 0.5rem;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
-        .login-btn:hover { background: #3A7BC8; }
-        .login-btn:disabled { background: #E5E5E5; color: #6B6B6B; cursor: not-allowed; }
+        .login-btn:hover { background: #2563EB; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.38); }
+        .login-btn:active { transform: translateY(0); }
+        .login-btn:disabled { background: #94A3B8; cursor: not-allowed; transform: none; box-shadow: none; }
         .error-msg {
             display: none;
-            background: #FDE8E8;
-            color: #D94A4A;
-            padding: 10px 14px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            border-left: 4px solid #D94A4A;
+            background: rgba(239, 68, 68, 0.08);
+            color: #B91C1C;
+            padding: 0.65rem 0.9rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            border: 1px solid rgba(239, 68, 68, 0.18);
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <img src="/static/logo.png" alt="Wetzel CRM" class="login-logo">
+        <div class="login-card-header">
+            <h1>Welcome back</h1>
+            <p>Sign in to your CRM workspace</p>
+        </div>
         <form class="login-form" onsubmit="handleLogin(event)">
             <div id="errorMsg" class="error-msg"></div>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required autocomplete="username">
+                <input type="text" id="username" name="username" required autocomplete="username" placeholder="your username">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required autocomplete="current-password">
+                <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
             </div>
             <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
         </form>
@@ -480,35 +500,35 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
     <title>Wetzel CRM</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ── Wetzel CRM Brand Kit v1.0 ── */
+            /* ── Wetzel CRM Brand Kit v2.0 ── */
 
             /* Primary Accent */
-            --wz-accent: #4A90D9;
-            --wz-accent-hover: #3A7BC8;
-            --wz-accent-active: #2D6BB5;
-            --wz-accent-light: #E8F0FB;
+            --wz-accent: #3B82F6;
+            --wz-accent-hover: #2563EB;
+            --wz-accent-active: #1D4ED8;
+            --wz-accent-light: rgba(59, 130, 246, 0.10);
 
             /* Neutrals */
-            --wz-black: #1A1A1A;
-            --wz-dark-gray: #2E2E2E;
-            --wz-mid-gray: #6B6B6B;
-            --wz-light-gray: #E5E5E5;
-            --wz-pale-gray: #F5F5F5;
+            --wz-black: #0F172A;
+            --wz-dark-gray: #1E293B;
+            --wz-mid-gray: #64748B;
+            --wz-light-gray: #E2E8F0;
+            --wz-pale-gray: #F4F6F8;
             --wz-white: #FFFFFF;
 
             /* Semantic */
-            --wz-error: #D94A4A;
-            --wz-error-bg: #FDE8E8;
-            --wz-warning: #D9924A;
-            --wz-warning-bg: #FDF3E8;
-            --wz-success: #4AD974;
-            --wz-success-bg: #E8FDF0;
+            --wz-error: #EF4444;
+            --wz-error-bg: rgba(239, 68, 68, 0.08);
+            --wz-warning: #F59E0B;
+            --wz-warning-bg: rgba(245, 158, 11, 0.08);
+            --wz-success: #10B981;
+            --wz-success-bg: rgba(16, 185, 129, 0.08);
 
             /* Typography */
-            --wz-font: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --wz-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
             /* Spacing (4px base) */
             --wz-space-2xs: 4px;
@@ -521,24 +541,24 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             /* Border Radii */
             --wz-radius-xs: 2px;
-            --wz-radius-sm: 4px;
-            --wz-radius-md: 6px;
-            --wz-radius-lg: 8px;
-            --wz-radius-xl: 12px;
+            --wz-radius-sm: 6px;
+            --wz-radius-md: 8px;
+            --wz-radius-lg: 14px;
+            --wz-radius-xl: 16px;
             --wz-radius-pill: 9999px;
 
             /* Shadows */
-            --wz-shadow-1: 0 1px 3px rgba(0,0,0,0.08);
-            --wz-shadow-2: 0 4px 12px rgba(0,0,0,0.10);
-            --wz-shadow-3: 0 8px 24px rgba(0,0,0,0.12);
-            --wz-shadow-4: 0 16px 48px rgba(0,0,0,0.16);
+            --wz-shadow-1: 0 4px 6px -1px rgba(15, 23, 42, 0.04), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+            --wz-shadow-2: 0 8px 16px -4px rgba(15, 23, 42, 0.06), 0 4px 8px -4px rgba(15, 23, 42, 0.04);
+            --wz-shadow-3: 0 16px 32px -8px rgba(15, 23, 42, 0.10);
+            --wz-shadow-4: 0 24px 48px -12px rgba(15, 23, 42, 0.16);
 
             /* ── Legacy aliases (used throughout existing CSS) ── */
-            --bg-primary: var(--wz-white);
+            --bg-primary: var(--wz-pale-gray);
             --bg-secondary: var(--wz-white);
             --bg-tertiary: var(--wz-pale-gray);
-            --bg-sidebar: var(--wz-pale-gray);
-            --bg-hover: var(--wz-light-gray);
+            --bg-sidebar: #0F172A;
+            --bg-hover: rgba(255,255,255,0.06);
             --text-primary: var(--wz-black);
             --text-secondary: var(--wz-mid-gray);
             --text-tertiary: var(--wz-mid-gray);
@@ -589,20 +609,20 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .sidebar {
             width: 250px;
             background: var(--bg-sidebar);
-            color: var(--text-primary);
+            color: #94A3B8;
             position: fixed;
             height: 100vh;
             left: 0;
             top: 0;
             overflow-y: auto;
             z-index: 1000;
-            border-right: 1px solid var(--border-secondary);
+            border-right: 1px solid rgba(255,255,255,0.06);
         }
 
         .sidebar-header {
             padding: 20px 10px;
             background: var(--bg-sidebar);
-            border-bottom: 1px solid var(--border-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -631,9 +651,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         .nav-item {
             padding: 8px 12px;
-            color: var(--wz-dark-gray);
+            color: #94A3B8;
             cursor: pointer;
-            transition: background 0.12s;
+            transition: background 0.15s, color 0.15s;
             border-radius: var(--wz-radius-sm);
             margin: 2px 8px;
             display: flex;
@@ -644,12 +664,13 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .nav-item:hover {
-            background: var(--wz-light-gray);
+            background: rgba(255,255,255,0.06);
+            color: #E2E8F0;
         }
 
         .nav-item.active {
-            background: var(--wz-accent-light);
-            color: var(--wz-accent);
+            background: rgba(59, 130, 246, 0.15);
+            color: #FFFFFF;
             font-weight: 500;
         }
 
@@ -657,6 +678,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             font-size: 16px;
             width: 20px;
             text-align: center;
+            opacity: 0.8;
         }
 
         /* Main Content Area */
@@ -664,7 +686,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             margin-left: 250px;
             flex: 1;
             min-height: 100vh;
-            background: var(--bg-primary);
+            background: var(--wz-pale-gray);
         }
 
         .top-bar {
@@ -674,6 +696,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             border-bottom: 1px solid var(--wz-light-gray);
             display: flex;
             align-items: center;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
         }
 
         .top-bar h2 {
@@ -707,18 +730,19 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             background: var(--wz-white);
             padding: var(--wz-space-lg);
             border-radius: var(--wz-radius-lg);
-            box-shadow: none;
-            transition: box-shadow 0.15s;
+            box-shadow: var(--wz-shadow-1);
+            transition: box-shadow 0.2s, transform 0.15s;
             cursor: pointer;
             text-align: center;
             text-decoration: none;
             display: block;
             color: inherit;
-            border: 1px solid var(--wz-light-gray);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .stat-card:hover {
-            box-shadow: var(--wz-shadow-1);
+            box-shadow: var(--wz-shadow-2);
+            transform: translateY(-1px);
         }
 
         .stat-number {
@@ -747,9 +771,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .dashboard-section {
             background: var(--wz-white);
             border-radius: var(--wz-radius-lg);
-            box-shadow: none;
+            box-shadow: var(--wz-shadow-1);
             padding: var(--wz-space-lg);
-            border: 1px solid var(--wz-light-gray);
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .section-header {
