@@ -541,10 +541,10 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             /* Border Radii */
             --wz-radius-xs: 2px;
-            --wz-radius-sm: 6px;
-            --wz-radius-md: 8px;
-            --wz-radius-lg: 14px;
-            --wz-radius-xl: 16px;
+            --wz-radius-sm: 8px;
+            --wz-radius-md: 10px;
+            --wz-radius-lg: 16px;
+            --wz-radius-xl: 20px;
             --wz-radius-pill: 9999px;
 
             /* Shadows */
@@ -646,39 +646,40 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .nav-menu {
-            padding: 12px 0;
+            padding: 8px 10px;
         }
 
         .nav-item {
-            padding: 8px 12px;
+            padding: 9px 12px;
             color: #94A3B8;
             cursor: pointer;
             transition: background 0.15s, color 0.15s;
             border-radius: var(--wz-radius-sm);
-            margin: 2px 8px;
+            margin: 1px 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 9px;
             font-size: 13px;
             font-weight: 400;
+            letter-spacing: 0.01em;
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.06);
-            color: #E2E8F0;
+            background: rgba(255,255,255,0.07);
+            color: #CBD5E1;
         }
 
         .nav-item.active {
-            background: rgba(59, 130, 246, 0.15);
+            background: rgba(59, 130, 246, 0.18);
             color: #FFFFFF;
             font-weight: 500;
         }
 
         .nav-icon {
-            font-size: 16px;
-            width: 20px;
+            font-size: 15px;
+            width: 18px;
             text-align: center;
-            opacity: 0.8;
+            flex-shrink: 0;
         }
 
         /* Main Content Area */
@@ -692,17 +693,18 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .top-bar {
             background: var(--wz-white);
             padding: 0 var(--wz-space-lg);
-            height: 52px;
+            height: 56px;
             border-bottom: 1px solid var(--wz-light-gray);
             display: flex;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06);
         }
 
         .top-bar h2 {
             color: var(--text-primary);
-            font-size: var(--wz-font-size-h1, 24px);
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .content-area {
@@ -728,7 +730,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         .stat-card {
             background: var(--wz-white);
-            padding: var(--wz-space-lg);
+            padding: 28px var(--wz-space-lg);
             border-radius: var(--wz-radius-lg);
             box-shadow: var(--wz-shadow-1);
             transition: box-shadow 0.2s, transform 0.15s;
@@ -742,22 +744,24 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         .stat-card:hover {
             box-shadow: var(--wz-shadow-2);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
         .stat-number {
-            font-size: 28px;
-            font-weight: 600;
+            font-size: 32px;
+            font-weight: 700;
             color: var(--wz-accent);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
         }
 
         .stat-label {
             color: var(--text-secondary);
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
+            letter-spacing: 0.08em;
+            font-weight: 600;
         }
 
         /* Dashboard Grid Layout */
@@ -774,6 +778,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             box-shadow: var(--wz-shadow-1);
             padding: var(--wz-space-lg);
             border: 1px solid rgba(226, 232, 240, 0.8);
+            overflow: hidden;
         }
 
         .section-header {
@@ -781,25 +786,32 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-primary);
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
         .section-title {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
         .section-action {
             color: var(--accent-primary);
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
             text-decoration: none;
+            padding: 4px 10px;
+            border-radius: var(--wz-radius-pill);
+            background: var(--wz-accent-light);
+            transition: background 0.15s;
         }
 
         .section-action:hover {
-            text-decoration: underline;
+            background: rgba(59, 130, 246, 0.18);
+            text-decoration: none;
         }
 
         /* To-Do Item */
@@ -888,12 +900,23 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         .opp-score {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            background: var(--accent-primary);
-            color: white;
+            padding: 3px 12px;
+            border-radius: var(--wz-radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--wz-accent-light);
+            color: var(--wz-accent-hover);
+            letter-spacing: 0.02em;
+        }
+
+        .opp-score.high {
+            background: rgba(16, 185, 129, 0.10);
+            color: #059669;
+        }
+
+        .opp-score.critical {
+            background: rgba(239, 68, 68, 0.08);
+            color: #DC2626;
         }
 
         /* Contact Item */
@@ -936,20 +959,22 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .btn-sm {
-            padding: 6px 12px;
+            padding: 5px 12px;
             font-size: 12px;
-            border: 1px solid var(--border-primary);
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border-radius: 4px;
+            font-weight: 500;
+            border: 1px solid var(--wz-light-gray);
+            background: var(--wz-pale-gray);
+            color: var(--wz-mid-gray);
+            border-radius: var(--wz-radius-pill);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
+            font-family: var(--wz-font);
         }
 
         .btn-sm:hover {
-            background: var(--accent-primary);
+            background: var(--wz-accent);
             color: white;
-            border-color: var(--accent-primary);
+            border-color: var(--wz-accent);
         }
 
         /* Form Elements from Original */
@@ -973,12 +998,13 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         select,
         textarea {
             width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-primary);
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            background: var(--bg-tertiary);
+            padding: 10px 14px;
+            border: 1.5px solid var(--wz-light-gray);
+            border-radius: var(--wz-radius-md);
+            font-size: 13px;
+            font-family: var(--wz-font);
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            background: var(--wz-pale-gray);
             color: var(--text-primary);
         }
 
@@ -986,7 +1012,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         select:focus,
         textarea:focus {
             outline: none;
-            border-color: var(--accent-primary);
+            border-color: var(--wz-accent);
+            background: var(--wz-white);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.10);
         }
 
         textarea {
@@ -1014,12 +1042,12 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .btn {
             padding: 0 var(--wz-space-md);
             border: none;
-            border-radius: var(--wz-radius-md);
+            border-radius: var(--wz-radius-pill);
             height: 34px;
             font-size: 13px;
             font-family: var(--wz-font);
             cursor: pointer;
-            transition: background 0.15s, box-shadow 0.15s;
+            transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -1030,20 +1058,24 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             background: var(--wz-accent);
             color: white;
             border: none;
+            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.28);
         }
 
         .btn-primary:hover {
             background: var(--wz-accent-hover);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.38);
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: var(--wz-accent);
-            border: 1px solid var(--wz-accent);
+            background: var(--wz-pale-gray);
+            color: var(--wz-mid-gray);
+            border: 1px solid var(--wz-light-gray);
         }
 
         .btn-secondary:hover {
-            background: var(--wz-accent-light);
+            background: var(--wz-light-gray);
+            color: var(--wz-black);
         }
 
         .search-box {
@@ -1063,20 +1095,18 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .contact-card {
-            background: var(--bg-secondary);
+            background: var(--wz-white);
             padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent-primary);
-            transition: all 0.3s;
-            border: 1px solid var(--border-secondary);
-            border-left: 4px solid var(--accent-primary);
+            border-radius: var(--wz-radius-lg);
+            transition: box-shadow 0.2s, transform 0.15s;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: var(--wz-shadow-1);
         }
 
         .contact-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px var(--shadow);
-            border-color: var(--border-primary);
-            border-left-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--wz-shadow-2);
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
         .contact-company {
@@ -1118,19 +1148,28 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid var(--accent-primary);
-            background: transparent;
-            color: var(--accent-primary);
-            border-radius: 20px;
+            padding: 6px 16px;
+            border: 1px solid var(--wz-light-gray);
+            background: var(--wz-white);
+            color: var(--wz-mid-gray);
+            border-radius: var(--wz-radius-pill);
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: var(--wz-font);
+            transition: all 0.15s;
         }
 
         .filter-btn.active {
-            background: var(--accent-primary);
+            background: var(--wz-accent);
             color: white;
+            border-color: var(--wz-accent);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: var(--wz-pale-gray);
+            color: var(--wz-black);
         }
 
         .message {
@@ -1172,28 +1211,31 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .modal-content {
             background-color: var(--wz-white);
             margin: 5% auto;
-            padding: var(--wz-space-lg);
-            border-radius: var(--wz-radius-lg);
+            padding: var(--wz-space-xl);
+            border-radius: var(--wz-radius-xl);
             width: 90%;
             max-width: 600px;
-            box-shadow: var(--wz-shadow-3);
+            box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18), 0 8px 24px rgba(15, 23, 42, 0.10);
             max-height: 85vh;
             overflow-y: auto;
-            border: 1px solid var(--wz-light-gray);
+            border: 1px solid rgba(226, 232, 240, 0.7);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--accent-primary);
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--wz-light-gray);
         }
 
         .modal-header h2 {
             margin: 0;
-            color: var(--accent-primary);
+            color: var(--wz-black);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .close-btn {
@@ -1251,12 +1293,16 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .grid-table th {
-            background: var(--accent-primary);
-            color: white;
-            font-weight: bold;
+            background: var(--wz-pale-gray);
+            color: var(--wz-mid-gray);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
             position: sticky;
             top: 0;
             z-index: 10;
+            border-bottom: 1px solid var(--wz-light-gray);
         }
 
         .grid-table th.criteria-col {

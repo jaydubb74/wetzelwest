@@ -1,7 +1,7 @@
 # Design System Specification: Wetzel CRM
-**Version:** 1.0  
+**Version:** 2.0  
 **Date:** June 18, 2026  
-**Status:** Proposed Architecture  
+**Status:** Applied  
 
 ---
 
@@ -60,7 +60,7 @@ Cards must abandon thin, full-perimeter borders in favor of soft corners and sof
 ```css
 .crm-card {
     background-color: #FFFFFF;
-    border-radius: 14px;
+    border-radius: 16px;
     border: 1px solid rgba(226, 232, 240, 0.8);
     box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.03), 
                 0 2px 4px -2px rgba(15, 23, 42, 0.02);
@@ -117,3 +117,42 @@ The logo space in the upper left corner should not sit inside an isolated square
 * **Grid Structure:** Dynamic flex columns overlaying a 12-column layout grid system.
 * **Spacing & Gaps:** Uniform `24px` margins between major workspace cards prevent layouts from feeling cluttered. This spacing ensures dense executive data remains highly readable.
 * **Header Navigation Bar:** A clean, horizontal bar running along the top of the content area. It contains breadcrumb navigation paths on the left side, with user profile management tools grouped on the right.
+
+---
+
+## 6. v2.0 Refinements — OneSignal + Linear Inspiration
+
+Applied June 18, 2026. Raises border radii, softens data chrome, and brings nav closer to Linear's density with OneSignal's clean action patterns.
+
+### 6.1 Updated Radius Scale
+
+| Token | v1.0 | v2.0 | Used For |
+|---|---|---|---|
+| `--wz-radius-sm` | 6px | 8px | Nav items, tags |
+| `--wz-radius-md` | 8px | 10px | Form inputs |
+| `--wz-radius-lg` | 14px | 16px | Cards, sections |
+| `--wz-radius-xl` | 16px | 20px | Modals, overlays |
+
+### 6.2 Navigation (Linear-Inspired)
+Nav items occupy the full sidebar width with `8px` radius. Spacing is tighter (`1px` margin between items, `8px` horizontal padding). The active state uses `rgba(59,130,246,0.18)` — visible but not harsh on dark backgrounds.
+
+### 6.3 Buttons (OneSignal-Inspired)
+All `.btn` and `.btn-sm` elements use `border-radius: 9999px` (pill). Primary buttons gain a colored drop shadow (`rgba(59,130,246,0.28)`) that intensifies on hover. Secondary buttons use a muted gray fill rather than outlined.
+
+### 6.4 Section Headers
+Bottom borders removed from section headers. Title weight increased to `700`, letter-spacing `-0.01em`. "View All" action links styled as small pill badges (`rgba(59,130,246,0.10)` background).
+
+### 6.5 Score Badges
+Opportunity score badges changed from solid fill to tinted pill:
+* Standard: `rgba(59,130,246,0.10)` bg, `#2563EB` text
+* High (200+ pts): `rgba(16,185,129,0.10)` bg, `#059669` text
+* Critical: `rgba(239,68,68,0.08)` bg, `#DC2626` text
+
+### 6.6 Contact Cards
+Left-border accent removed. Full `16px` rounded card with `box-shadow: var(--wz-shadow-1)`. Hover lifts with `translateY(-2px)` and a subtle blue border tint.
+
+### 6.7 Opportunity Grid Table
+Column headers changed from solid accent fill to muted `#F4F6F8` background with uppercase `11px` labels in `#64748B`. Eliminates the harsh blue header bar while maintaining clear structure.
+
+### 6.8 Form Inputs
+Radius updated to `10px`. Default fill uses canvas `#F4F6F8`; on focus transitions to white with a `3px rgba(59,130,246,0.10)` focus ring.
