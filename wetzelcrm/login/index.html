@@ -11,9 +11,21 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --canvas:   #F4F6F8;
+      --surface:  #FFFFFF;
+      --sidebar:  #0F172A;
+      --ink:      #0F172A;
+      --muted:    #64748B;
+      --border:   #E2E8F0;
+      --blue:     #3B82F6;
+      --blue-deep:#2563EB;
+      --red:      #EF4444;
+    }
+
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #3d4d5d;
+      background: var(--sidebar);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -21,115 +33,198 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .login-container {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    .login-wrap {
       width: 100%;
       max-width: 400px;
-      text-align: center;
+      padding: 1rem;
+    }
+
+    .login-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      margin-bottom: 1.75rem;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--blue);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .brand-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
     }
 
     .login-logo {
-      width: 180px;
+      width: 140px;
       height: auto;
-      margin-bottom: 30px;
+      display: block;
+      margin: 0 auto 1.5rem;
     }
 
-    .login-form { text-align: left; }
+    .login-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(226, 232, 240, 0.6);
+    }
+
+    .card-header {
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
+
+    .card-header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-header p {
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 1rem;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 0.4rem;
       font-weight: 600;
-      color: #2c3e50;
-      font-size: 14px;
+      color: var(--ink);
+      font-size: 0.82rem;
+      letter-spacing: 0.01em;
     }
 
     .form-group input {
       width: 100%;
-      padding: 12px 14px;
-      border: 2px solid #e0e6ed;
-      border-radius: 8px;
-      font-size: 15px;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.92rem;
       font-family: inherit;
-      transition: border-color 0.2s;
+      color: var(--ink);
+      background: var(--canvas);
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     }
 
     .form-group input:focus {
       outline: none;
-      border-color: #3498db;
+      border-color: var(--blue);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
     }
 
     .login-btn {
       width: 100%;
-      padding: 14px;
-      background: #3498db;
+      padding: 0.8rem;
+      background: var(--blue);
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: background 0.2s;
+      margin-top: 0.5rem;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
-    .login-btn:hover { background: #2980b9; }
-    .login-btn:disabled { background: #95a5a6; cursor: not-allowed; }
+    .login-btn:hover {
+      background: var(--blue-deep);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.38);
+    }
+
+    .login-btn:active { transform: translateY(0); }
+
+    .login-btn:disabled {
+      background: #94A3B8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
 
     .error-msg {
       display: none;
-      background: #fee;
-      color: #c0392b;
-      padding: 10px 14px;
-      border-radius: 6px;
-      margin-bottom: 16px;
-      font-size: 14px;
+      background: rgba(239, 68, 68, 0.08);
+      color: #B91C1C;
+      padding: 0.65rem 0.9rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border: 1px solid rgba(239, 68, 68, 0.18);
     }
 
     .footer-links {
-      margin-top: 24px;
-      font-size: 13px;
-      color: #95a5a6;
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
     }
 
     .footer-links a {
-      color: #7f8c8d;
+      color: rgba(255,255,255,0.5);
       text-decoration: none;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover { color: #3498db; }
+    .footer-links a:hover { color: rgba(255,255,255,0.85); }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <img src="/wetzelcrm/logo.png" alt="Wetzel CRM" class="login-logo" onerror="this.style.display='none'">
-    <form class="login-form" onsubmit="handleLogin(event)">
-      <div id="errorMsg" class="error-msg"></div>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required autocomplete="username">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <img src="/wetzelcrm/logo.png" alt="Wetzel CRM" class="login-logo" onerror="this.closest('.login-brand').innerHTML='<span class=\'brand-mark\'>W</span><span class=\'brand-name\'>WetzelCRM</span>'">
+    </div>
+
+    <div class="login-card">
+      <div class="card-header">
+        <h1>Welcome back</h1>
+        <p>Sign in to your CRM workspace</p>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
-    </form>
+
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <div id="errorMsg" class="error-msg"></div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required autocomplete="username" placeholder="your username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+      </form>
+    </div>
+
     <div class="footer-links">
-      <a href="/wetzelcrm">← Back to WetzelCRM</a> &nbsp;|&nbsp; <a href="/">wetzelwest.com</a>
+      <a href="/wetzelcrm">← Back to WetzelCRM</a> &nbsp;·&nbsp; <a href="/">wetzelwest.com</a>
     </div>
   </div>
 
   <script>
-    // CRM server URL — update this after setting up Cloudflare Tunnel
     const CRM_SERVER = 'https://crm.wetzelwest.com';
 
     async function handleLogin(e) {
@@ -137,7 +232,7 @@
       const btn = document.getElementById('loginBtn');
       const errDiv = document.getElementById('errorMsg');
       btn.disabled = true;
-      btn.textContent = 'Signing in...';
+      btn.textContent = 'Signing in…';
       errDiv.style.display = 'none';
 
       const controller = new AbortController();
@@ -175,7 +270,6 @@
         }
       } catch (error) {
         clearTimeout(timeoutId);
-        console.error('[WetzelCRM] Login fetch failed:', error);
         if (error.name === 'AbortError') {
           errDiv.textContent = 'CRM server is offline or not responding.';
         } else {

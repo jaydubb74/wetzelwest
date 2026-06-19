@@ -7,21 +7,26 @@
   <meta name="description" content="WetzelCRM — A custom CRM built on WetzelWest." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink:    #0f1a2a;
-      --muted:  #6b7e96;
-      --border: #e2e8f0;
-      --blue:   #1e6fcc;
-      --surface:#f8fafc;
+      --canvas:   #F4F6F8;
+      --surface:  #FFFFFF;
+      --sidebar:  #0F172A;
+      --ink:      #0F172A;
+      --muted:    #64748B;
+      --border:   #E2E8F0;
+      --blue:     #3B82F6;
+      --blue-deep:#2563EB;
+      --green:    #10B981;
+      --red:      #EF4444;
     }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: var(--surface);
+      background: var(--canvas);
       color: var(--ink);
       min-height: 100svh;
       display: flex;
@@ -31,48 +36,52 @@
 
     /* Nav */
     nav {
-      padding: 1.25rem 2rem;
+      padding: 1rem 2rem;
       border-bottom: 1px solid var(--border);
-      background: #fff;
+      background: var(--surface);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
     }
 
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.65rem;
       text-decoration: none;
       color: var(--ink);
     }
 
     .nav-mark {
-      width: 30px;
-      height: 30px;
-      background: var(--blue);
-      border-radius: 7px;
+      width: 32px;
+      height: 32px;
+      background: var(--sidebar);
+      border-radius: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
       font-size: 0.8rem;
       font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
     .nav-name {
-      font-weight: 700;
-      font-size: 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: -0.01em;
     }
 
     .nav-back {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--muted);
       text-decoration: none;
       display: flex;
       align-items: center;
       gap: 0.3rem;
       transition: color 0.2s;
+      font-weight: 500;
     }
     .nav-back:hover { color: var(--blue); }
 
@@ -84,22 +93,23 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 4rem 2rem;
+      padding: 5rem 2rem;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      padding: 0.35rem 0.85rem;
-      background: #e8f0fc;
-      color: var(--blue);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      padding: 0.3rem 0.8rem;
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--blue-deep);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       border-radius: 100px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
+      border: 1px solid rgba(59, 130, 246, 0.15);
     }
 
     .badge-dot {
@@ -116,70 +126,103 @@
     }
 
     h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
       line-height: 1.1;
       margin-bottom: 1rem;
       color: var(--ink);
     }
 
     .subtitle {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--muted);
-      max-width: 440px;
-      line-height: 1.65;
-      margin-bottom: 2.5rem;
+      max-width: 420px;
+      line-height: 1.7;
+      margin-bottom: 2.75rem;
+      font-weight: 400;
     }
 
-    /* Feature list */
+    /* Feature chips */
     .features {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.6rem;
       justify-content: center;
       margin-bottom: 3rem;
-      max-width: 600px;
+      max-width: 560px;
     }
 
     .feature-chip {
-      padding: 0.45rem 1rem;
-      background: #fff;
+      padding: 0.4rem 0.9rem;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 100px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--muted);
       font-weight: 500;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }
 
-    .back-btn {
+    /* Buttons */
+    .btn-primary {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.8rem 1.75rem;
-      background: var(--ink);
+      padding: 0.75rem 1.6rem;
+      background: var(--blue);
       color: #fff;
       text-decoration: none;
-      border-radius: 100px;
-      font-size: 0.9rem;
+      border-radius: 10px;
+      font-size: 0.88rem;
       font-weight: 600;
       letter-spacing: 0.01em;
-      transition: background 0.2s, transform 0.2s;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--blue-deep);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.32);
     }
 
-    .back-btn:hover {
-      background: var(--blue);
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.6rem;
+      background: var(--surface);
+      color: var(--muted);
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .btn-secondary:hover {
+      background: #F1F5F9;
+      color: var(--ink);
       transform: translateY(-1px);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     /* Footer */
     footer {
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 2rem;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--muted);
       border-top: 1px solid var(--border);
+      background: var(--surface);
     }
     footer a { color: var(--muted); text-decoration: underline; }
   </style>
@@ -213,9 +256,9 @@
       <span class="feature-chip">Follow-up tasks</span>
       <span class="feature-chip">Google Sync</span>
     </div>
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
-      <a href="https://crm.wetzelwest.com/login" class="back-btn" style="background: var(--blue);">Login →</a>
-      <a href="/" class="back-btn">← Back to WetzelWest</a>
+    <div class="btn-group">
+      <a href="https://crm.wetzelwest.com/login" class="btn-primary">Login →</a>
+      <a href="/" class="btn-secondary">← Back to WetzelWest</a>
     </div>
   </main>
 
