@@ -3669,7 +3669,6 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         function navigateToQ2OKRs() {
             navigateTo('okrs');
-            // After the page loads, switch to quarterly view and select Q2 2026
             setTimeout(() => {
                 document.querySelectorAll('.okr-tab').forEach(tab => tab.classList.remove('active'));
                 const quarterlyTab = document.querySelector('.okr-tab[onclick*="quarterly"]');
@@ -3706,9 +3705,6 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     okr.status !== 'Not a Priority'
                 ).length;
                 document.getElementById('stat-q1-okrs').textContent = activeP0P1Count;
-
-                // LinkedIn followers is hardcoded in HTML (10,892)
-                // Could be updated with scraping in the future
 
                 // Load dashboard sections
                 console.log('Loading top todos...');
