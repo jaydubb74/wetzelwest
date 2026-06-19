@@ -36,6 +36,43 @@ def migrate_database():
         cursor.execute("UPDATE followup_tasks SET section = 'todo' WHERE completed = 0 OR completed IS NULL")
     if 'assignee' not in columns:
         cursor.execute("ALTER TABLE followup_tasks ADD COLUMN assignee TEXT DEFAULT NULL")
+
+    # Replace grid criteria with new 200-pt framework
+    cursor.execute("SELECT COUNT(*) FROM grid_criteria WHERE grid_id = 1")
+    current_count = cursor.fetchone()[0]
+    new_criteria = [
+        # (criteria_name, max_score, row_order, category)
+        # ROLE FIT — 70 pts
+        ('Commercial underperformance problem (broken/missing revenue engine)', 25, 10, 'ROLE FIT'),
+        ('Revenue ownership scope (sales + success + partnerships, not just sales)', 20, 11, 'ROLE FIT'),
+        ('Stage match (Builder $5-200M Series B-D / Scaler $200-500M Late-Stage)', 15, 12, 'ROLE FIT'),
+        ('C-suite seat with real authority (not functional VP inside a larger structure)', 10, 13, 'ROLE FIT'),
+        # COMPANY QUALITY — 50 pts
+        ('CEO GTM alignment (growth advocate, trusts the commercial leader)', 20, 20, 'COMPANY QUALITY'),
+        ('PMF + product signal (NRR >120, retention, customer love)', 15, 21, 'COMPANY QUALITY'),
+        ('Market size & trajectory', 15, 22, 'COMPANY QUALITY'),
+        # CULTURE — 25 pts
+        ('Results-accountable, fast-moving (not consensus/process-first)', 15, 30, 'CULTURE'),
+        ('Board + leadership alignment', 10, 31, 'CULTURE'),
+        # COMPENSATION — 30 pts
+        ('Cash comp (base + target bonus)', 15, 40, 'COMPENSATION'),
+        ('Equity upside (meaningful at stage)', 15, 41, 'COMPENSATION'),
+        # PASSION / GUT — 25 pts
+        ('Genuine excitement about the product and market', 15, 50, 'PASSION / GUT'),
+        ('Gut feeling (override factor — weighted high so a strong gut reaction actually moves the needle)', 10, 51, 'PASSION / GUT'),
+    ]
+    expected_names = {c[0] for c in new_criteria}
+    cursor.execute("SELECT criteria_name FROM grid_criteria WHERE grid_id = 1")
+    existing_names = {row[0] for row in cursor.fetchall()}
+    if existing_names != expected_names:
+        cursor.execute("DELETE FROM grid_criteria WHERE grid_id = 1")
+        for name, score, order, cat in new_criteria:
+            cursor.execute(
+                "INSERT INTO grid_criteria (grid_id, criteria_name, max_score, row_order, category) VALUES (?, ?, ?, ?, ?)",
+                (1, name, score, order, cat)
+            )
+        print("✅ Grid criteria updated to 200-pt framework")
+
     conn.commit()
     conn.close()
     print("✅ Database migration check complete")
@@ -1241,8 +1278,19 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .grid-table .total-score {
             font-size: 24px;
             font-weight: 600;
-            color: white;
+            color: black;
             margin: 10px 0;
+        }
+
+        .grid-table .criteria-section-header td {
+            background: #e8eaf0;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #444;
+            padding: 8px 14px;
+            border-top: 2px solid #c5c8d6;
         }
 
         .grid-table .company-role {
@@ -4847,7 +4895,19 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             html += '</tr></thead><tbody>';
 
+            // Section point totals
+            const sectionTotals = { 'ROLE FIT': 70, 'COMPANY QUALITY': 50, 'CULTURE': 25, 'COMPENSATION': 30, 'PASSION / GUT': 25 };
+            let lastCategory = null;
+
             criteria.forEach(crit => {
+                // Inject section header row when category changes
+                if (crit.category && crit.category !== lastCategory) {
+                    lastCategory = crit.category;
+                    const sectionPts = sectionTotals[crit.category] ? ` — ${sectionTotals[crit.category]} pts` : '';
+                    const colSpan = filteredCompanies.length + 1;
+                    html += `<tr class="criteria-section-header"><td colspan="${colSpan}">${crit.category}${sectionPts}</td></tr>`;
+                }
+
                 html += '<tr>';
                 html += `
                     <td class="criteria-label">
