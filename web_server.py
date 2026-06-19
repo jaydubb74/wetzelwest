@@ -2384,12 +2384,12 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                         <div class="stat-number" id="stat-active-todos">0</div>
                         <div class="stat-label">Active To-Do's</div>
                     </div>
-                    <div class="stat-card" onclick="navigateTo('okrs')">
+                    <div class="stat-card" onclick="navigateToQ2OKRs()">
                         <div class="stat-number" id="stat-q1-okrs">0</div>
-                        <div class="stat-label">Q1 OKRs (P0)</div>
+                        <div class="stat-label">Q2 OKRs (P0+P1)</div>
                     </div>
                     <a href="https://www.linkedin.com/in/joshwetzel/" target="_blank" class="stat-card">
-                        <div class="stat-number" id="stat-linkedin-followers">10,892</div>
+                        <div class="stat-number" id="stat-linkedin-followers">11,068</div>
                         <div class="stat-label">LinkedIn Followers</div>
                     </a>
                 </div>
@@ -2415,11 +2415,11 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     </div>
                 </div>
 
-                <!-- Q1 2026 OKRs Section -->
+                <!-- Q2 2026 OKRs Section -->
                 <div class="dashboard-section" style="margin-bottom: 30px;">
                     <div class="section-header">
-                        <h3 class="section-title">🎯 Q1 2026 OKRs (P0 + P1)</h3>
-                        <a href="#" class="section-action" onclick="navigateTo('okrs'); return false;">View All</a>
+                        <h3 class="section-title">🎯 Q2 2026 OKRs (P0 + P1)</h3>
+                        <a href="#" class="section-action" onclick="navigateToQ2OKRs(); return false;">View All</a>
                     </div>
                     <div id="q1-okrs-list" class="loading">Loading...</div>
                 </div>
@@ -3667,6 +3667,19 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             }
         }
 
+        function navigateToQ2OKRs() {
+            navigateTo('okrs');
+            // After the page loads, switch to quarterly view and select Q2 2026
+            setTimeout(() => {
+                document.querySelectorAll('.okr-tab').forEach(tab => tab.classList.remove('active'));
+                const quarterlyTab = document.querySelector('.okr-tab[onclick*="quarterly"]');
+                if (quarterlyTab) quarterlyTab.classList.add('active');
+                document.getElementById('annual-okr-view').style.display = 'none';
+                document.getElementById('quarterly-okr-view').style.display = 'block';
+                loadQuarterlyOKRs(2026, 2);
+            }, 100);
+        }
+
         // ==================== DASHBOARD FUNCTIONS ====================
         async function loadDashboard() {
             console.log('loadDashboard() called!');
@@ -3684,16 +3697,15 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 const followups = await followupsRes.json();
                 document.getElementById('stat-active-todos').textContent = followups.length || 0;
 
-                // Load Q1 OKRs P0 count
-                const okrsRes = await fetch('/api/okrs/quarterly?year=2026&quarter=1');
+                // Load Q2 OKRs P0+P1 count
+                const okrsRes = await fetch('/api/okrs/quarterly?year=2026&quarter=2');
                 const okrs = await okrsRes.json();
-                // Count P0 OKRs that are not "Completed" or "Not a Priority"
-                const activeP0Count = okrs.filter(okr =>
-                    okr.priority === 'P0' &&
+                const activeP0P1Count = okrs.filter(okr =>
+                    (okr.priority === 'P0' || okr.priority === 'P1') &&
                     okr.status !== 'Completed' &&
                     okr.status !== 'Not a Priority'
                 ).length;
-                document.getElementById('stat-q1-okrs').textContent = activeP0Count;
+                document.getElementById('stat-q1-okrs').textContent = activeP0P1Count;
 
                 // LinkedIn followers is hardcoded in HTML (10,892)
                 // Could be updated with scraping in the future
@@ -3703,7 +3715,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 await loadTopTodos();
                 console.log('Loading top opportunities...');
                 await loadTopOpportunities();
-                console.log('Loading Q1 OKRs...');
+                console.log('Loading Q2 OKRs...');
                 await loadQ1OKRs();
                 console.log('Loading next actions...');
                 await loadNextActions();
@@ -3792,7 +3804,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         async function loadQ1OKRs() {
             try {
-                const response = await fetch('/api/okrs/quarterly?year=2026&quarter=1');
+                const response = await fetch('/api/okrs/quarterly?year=2026&quarter=2');
                 const okrs = await response.json();
 
                 const container = document.getElementById('q1-okrs-list');
