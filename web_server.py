@@ -37,7 +37,7 @@ def migrate_database():
     if 'assignee' not in columns:
         cursor.execute("ALTER TABLE followup_tasks ADD COLUMN assignee TEXT DEFAULT NULL")
 
-    # Replace grid criteria with new 200-pt framework
+    # Replace grid criteria with new 250-pt framework
     cursor.execute("SELECT COUNT(*) FROM grid_criteria WHERE grid_id = 1")
     current_count = cursor.fetchone()[0]
     new_criteria = [
@@ -60,6 +60,10 @@ def migrate_database():
         # PASSION / GUT — 25 pts
         ('Genuine excitement about the product and market', 15, 50, 'PASSION / GUT'),
         ('Gut feeling (override factor — weighted high so a strong gut reaction actually moves the needle)', 10, 51, 'PASSION / GUT'),
+        # METRICS — 50 pts
+        ('YoY Growth %', 20, 60, 'METRICS'),
+        ('NRR', 20, 61, 'METRICS'),
+        ('GRR', 10, 62, 'METRICS'),
     ]
     expected_names = {c[0] for c in new_criteria}
     cursor.execute("SELECT criteria_name FROM grid_criteria WHERE grid_id = 1")
@@ -71,7 +75,7 @@ def migrate_database():
                 "INSERT INTO grid_criteria (grid_id, criteria_name, max_score, row_order, category) VALUES (?, ?, ?, ?, ?)",
                 (1, name, score, order, cat)
             )
-        print("✅ Grid criteria updated to 200-pt framework")
+        print("✅ Grid criteria updated to 250-pt framework")
 
     conn.commit()
     conn.close()
