@@ -3252,17 +3252,31 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     <label>Company Name *</label>
                     <input type="text" id="grid-company-name" required>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Opportunity Stage 🎯</label>
+                        <select id="grid-company-opportunity-stage">
+                            <option value="Inquiry">Inquiry</option>
+                            <option value="Screening">Screening</option>
+                            <option value="Interviewing">Interviewing</option>
+                            <option value="Offer">Offer</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Declined">Closed Lost</option>
+                            <option value="Withdrawn">Withdrawn</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Archetype</label>
+                        <select id="grid-company-archetype">
+                            <option value="">— Select —</option>
+                            <option value="Builder">Builder</option>
+                            <option value="Scaler">Scaler</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
-                    <label>Opportunity Stage 🎯</label>
-                    <select id="grid-company-opportunity-stage" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                        <option value="Inquiry">Inquiry</option>
-                        <option value="Screening">Screening</option>
-                        <option value="Interviewing">Interviewing</option>
-                        <option value="Offer">Offer</option>
-                        <option value="Accepted">Accepted</option>
-                        <option value="Declined">Closed Lost</option>
-                        <option value="Withdrawn">Withdrawn</option>
-                    </select>
+                    <label>Date</label>
+                    <input type="date" id="grid-company-date">
                 </div>
                 <div class="form-group">
                     <label>LinkedIn Profile</label>
@@ -3371,17 +3385,32 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     <input type="text" id="company-detail-name" required>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Opportunity Stage 🎯</label>
+                        <select id="company-detail-opportunity-stage">
+                            <option value="Inquiry">Inquiry</option>
+                            <option value="Screening">Screening</option>
+                            <option value="Interviewing">Interviewing</option>
+                            <option value="Offer">Offer</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Declined">Closed Lost</option>
+                            <option value="Withdrawn">Withdrawn</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Archetype</label>
+                        <select id="company-detail-archetype">
+                            <option value="">— Select —</option>
+                            <option value="Builder">Builder</option>
+                            <option value="Scaler">Scaler</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label>Opportunity Stage 🎯</label>
-                    <select id="company-detail-opportunity-stage" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                        <option value="Inquiry">Inquiry</option>
-                        <option value="Screening">Screening</option>
-                        <option value="Interviewing">Interviewing</option>
-                        <option value="Offer">Offer</option>
-                        <option value="Accepted">Accepted</option>
-                        <option value="Declined">Closed Lost</option>
-                        <option value="Withdrawn">Withdrawn</option>
-                    </select>
+                    <label>Date</label>
+                    <input type="date" id="company-detail-date">
                 </div>
 
                 <div class="form-group">
@@ -4994,8 +5023,10 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                              onmouseout="this.style.background='transparent'"
                              title="Click to view opportunity details">
                             <div class="company-name">${company.company_name}</div>
+                            ${company.archetype ? `<div style="font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #94A3B8; margin-top: 3px;">${company.archetype}</div>` : ''}
                             ${company.opportunity_stage ? `<div style="font-size: 11px; opacity: 0.85; margin-top: 3px;">🎯 ${company.opportunity_stage}</div>` : ''}
                             ${company.role ? `<div class="company-role">${company.role}</div>` : ''}
+                            ${company.opportunity_date ? `<div style="font-size: 10px; color: #94A3B8; margin-top: 2px;">${new Date(company.opportunity_date + 'T00:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}</div>` : ''}
                         </div>
                         <div class="total-score">${totalScore}</div>
                         <button onclick="viewOpportunityDetail(${company.grid_company_id})"
@@ -5549,6 +5580,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             const data = {
                 company_name: document.getElementById('grid-company-name').value,
                 opportunity_stage: document.getElementById('grid-company-opportunity-stage').value,
+                archetype: document.getElementById('grid-company-archetype').value,
+                opportunity_date: document.getElementById('grid-company-date').value,
                 company_linkedin: document.getElementById('grid-company-linkedin').value,
                 location: document.getElementById('grid-company-location').value,
                 role: document.getElementById('grid-company-role').value,
@@ -5684,6 +5717,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             document.getElementById('company-detail-id').value = companyId;
             document.getElementById('company-detail-name').value = company.company_name || '';
             document.getElementById('company-detail-opportunity-stage').value = company.opportunity_stage || 'Inquiry';
+            document.getElementById('company-detail-archetype').value = company.archetype || '';
+            document.getElementById('company-detail-date').value = company.opportunity_date || '';
             document.getElementById('company-detail-linkedin').value = company.company_linkedin || '';
             document.getElementById('company-detail-location').value = company.location || '';
             document.getElementById('company-detail-role').value = company.role || '';
@@ -5717,6 +5752,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 grid_company_id: currentEditingCompanyId,
                 company_name: document.getElementById('company-detail-name').value,
                 opportunity_stage: document.getElementById('company-detail-opportunity-stage').value,
+                archetype: document.getElementById('company-detail-archetype').value,
+                opportunity_date: document.getElementById('company-detail-date').value,
                 company_linkedin: document.getElementById('company-detail-linkedin').value,
                 location: document.getElementById('company-detail-location').value,
                 role: document.getElementById('company-detail-role').value,
@@ -7353,10 +7390,11 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     grid_id, company_name, company_linkedin, location, role,
                     stage, raised_amount, employees, revenue, next_step, benefits,
                     cash_comp, base_salary, incentive, equity,
-                    targeted_annual_comp, total_4year_comp, column_order, opportunity_stage
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    targeted_annual_comp, total_4year_comp, column_order,
+                    opportunity_stage, archetype, opportunity_date
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
-                1,  # grid_id
+                1,
                 data['company_name'],
                 data.get('company_linkedin'),
                 data.get('location'),
@@ -7374,7 +7412,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 data.get('targeted_annual_comp'),
                 data.get('total_4year_comp'),
                 data.get('column_order', 0),
-                data.get('opportunity_stage', 'Inquiry')
+                data.get('opportunity_stage', 'Inquiry'),
+                data.get('archetype'),
+                data.get('opportunity_date')
             ))
 
             company_id = cursor.lastrowid
@@ -7409,7 +7449,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     stage = ?, raised_amount = ?, employees = ?, revenue = ?,
                     next_step = ?, benefits = ?, cash_comp = ?, base_salary = ?,
                     incentive = ?, equity = ?, targeted_annual_comp = ?, total_4year_comp = ?,
-                    opportunity_stage = ?, funding_details = ?, employee_linkedin_url = ?, core_solution = ?
+                    opportunity_stage = ?, funding_details = ?, employee_linkedin_url = ?,
+                    core_solution = ?, archetype = ?, opportunity_date = ?
                 WHERE grid_company_id = ?
             """, (
                 data['company_name'], data.get('company_linkedin'), data.get('location'),
@@ -7419,6 +7460,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 data.get('incentive'), data.get('equity'), data.get('targeted_annual_comp'),
                 data.get('total_4year_comp'), data.get('opportunity_stage', 'Inquiry'),
                 data.get('funding_details'), data.get('employee_linkedin_url'), data.get('core_solution'),
+                data.get('archetype') or None, data.get('opportunity_date') or None,
                 data['grid_company_id']
             ))
 
