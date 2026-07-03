@@ -4994,13 +4994,13 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                         </div>
                         <div class="total-score">${totalScore}</div>
                         <button onclick="viewOpportunityDetail(${company.grid_company_id})"
-                                style="margin-top: 8px; padding: 5px 12px; background: rgba(255,255,255,0.3);
-                                       border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                                style="margin-top: 8px; padding: 5px 12px; background: rgba(255,255,255,0.12);
+                                       border: 1px solid rgba(255,255,255,0.25); color: #94A3B8; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; font-weight: 500;">
                             View Details
                         </button>
                         <button onclick="viewCompanyDetails(${company.grid_company_id}); event.stopPropagation();"
-                                style="margin-top: 8px; padding: 5px 12px; background: rgba(255,255,255,0.2);
-                                       border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                                style="margin-top: 4px; padding: 4px 12px; background: transparent;
+                                       border: 1px solid rgba(255,255,255,0.15); color: #64748B; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit;">
                             Edit
                         </button>
                     </th>
