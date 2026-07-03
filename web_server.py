@@ -4971,6 +4971,11 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 return true;
             });
 
+            // Sort by total score descending
+            filteredCompanies.sort((a, b) =>
+                calculateCompanyScore(b.grid_company_id) - calculateCompanyScore(a.grid_company_id)
+            );
+
             if (filteredCompanies.length === 0) {
                 container.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">No opportunities match the selected filters.</p>';
                 return;
