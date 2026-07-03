@@ -268,6 +268,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             self.delete_grid_criteria(data)
         elif self.path == '/api/toggle-grid-score':
             self.toggle_grid_score(data)
+        elif self.path == '/api/set-grid-score':
+            self.set_grid_score(data)
         elif self.path == '/api/okrs/add':
             self.add_okr(data)
         elif self.path == '/api/okrs/update':
@@ -1330,12 +1332,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         .grid-table td.score-cell {
             text-align: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .grid-table td.score-cell:hover {
-            background: var(--bg-hover);
+            padding: 8px 10px;
+            vertical-align: middle;
         }
 
         .grid-table .company-header {
@@ -1375,6 +1373,41 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .checkbox-icon {
             font-size: 20px;
             color: var(--wz-success);
+        }
+
+        .grid-score-input {
+            width: 56px;
+            height: 32px;
+            border: 1.5px solid var(--wz-light-gray);
+            border-radius: var(--wz-radius-sm);
+            background: var(--wz-pale-gray);
+            color: var(--wz-black);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--wz-font);
+            text-align: center;
+            padding: 0 4px;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+            -moz-appearance: textfield;
+        }
+
+        .grid-score-input::-webkit-inner-spin-button,
+        .grid-score-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .grid-score-input:focus {
+            outline: none;
+            border-color: var(--wz-accent);
+            background: var(--wz-white);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .grid-score-input:not(:placeholder-shown) {
+            background: var(--wz-white);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: var(--wz-accent-hover);
         }
 
         .criteria-with-score {
@@ -2506,9 +2539,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                         <div class="stat-number" id="stat-active-todos">0</div>
                         <div class="stat-label">Active To-Do's</div>
                     </div>
-                    <div class="stat-card" onclick="navigateToQ2OKRs()">
+                    <div class="stat-card" onclick="navigateToQ3OKRs()">
                         <div class="stat-number" id="stat-q1-okrs">0</div>
-                        <div class="stat-label">Q2 OKRs (P0+P1)</div>
+                        <div class="stat-label">Q3 OKRs (P0+P1)</div>
                     </div>
                     <a href="https://www.linkedin.com/in/joshwetzel/" target="_blank" class="stat-card">
                         <div class="stat-number" id="stat-linkedin-followers">11,068</div>
@@ -2540,8 +2573,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 <!-- Q2 2026 OKRs Section -->
                 <div class="dashboard-section" style="margin-bottom: 30px;">
                     <div class="section-header">
-                        <h3 class="section-title">🎯 Q2 2026 OKRs (P0 + P1)</h3>
-                        <a href="#" class="section-action" onclick="navigateToQ2OKRs(); return false;">View All</a>
+                        <h3 class="section-title">🎯 Q3 2026 OKRs (P0 + P1)</h3>
+                        <a href="#" class="section-action" onclick="navigateToQ3OKRs(); return false;">View All</a>
                     </div>
                     <div id="q1-okrs-list" class="loading">Loading...</div>
                 </div>
@@ -2841,9 +2874,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                         <button class="quarter-btn" onclick="loadQuarterlyOKRs(2025, 2)">Q2 2025</button>
                         <button class="quarter-btn" onclick="loadQuarterlyOKRs(2025, 3)">Q3 2025</button>
                         <button class="quarter-btn" onclick="loadQuarterlyOKRs(2025, 4)">Q4 2025</button>
-                        <button class="quarter-btn active" onclick="loadQuarterlyOKRs(2026, 1)">Q1 2026</button>
+                        <button class="quarter-btn" onclick="loadQuarterlyOKRs(2026, 1)">Q1 2026</button>
                         <button class="quarter-btn" onclick="loadQuarterlyOKRs(2026, 2)">Q2 2026</button>
-                        <button class="quarter-btn" onclick="loadQuarterlyOKRs(2026, 3)">Q3 2026</button>
+                        <button class="quarter-btn active" onclick="loadQuarterlyOKRs(2026, 3)">Q3 2026</button>
                         <button class="quarter-btn" onclick="loadQuarterlyOKRs(2026, 4)">Q4 2026</button>
                     </div>
                     <div id="quarterly-okr-list" class="loading">Loading quarterly OKRs...</div>
@@ -3785,11 +3818,18 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             } else if (page === 'companies') {
                 loadCompaniesPage();
             } else if (page === 'okrs') {
-                loadAnnualOKRs();
+                // Default to Q3 2026 quarterly view
+                document.querySelectorAll('.okr-tab').forEach(tab => tab.classList.remove('active'));
+                const quarterlyTab = document.querySelector('.okr-tab[onclick*="quarterly"]');
+                if (quarterlyTab) quarterlyTab.classList.add('active');
+                document.getElementById('annual-okr-view').style.display = 'none';
+                document.getElementById('quarterly-okr-view').style.display = 'block';
+                loadQuarterlyOKRs(2026, 3);
             }
         }
 
-        function navigateToQ2OKRs() {
+        function navigateToQ2OKRs() { navigateToQ3OKRs(); }
+        function navigateToQ3OKRs() {
             navigateTo('okrs');
             setTimeout(() => {
                 document.querySelectorAll('.okr-tab').forEach(tab => tab.classList.remove('active'));
@@ -3797,7 +3837,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 if (quarterlyTab) quarterlyTab.classList.add('active');
                 document.getElementById('annual-okr-view').style.display = 'none';
                 document.getElementById('quarterly-okr-view').style.display = 'block';
-                loadQuarterlyOKRs(2026, 2);
+                loadQuarterlyOKRs(2026, 3);
             }, 100);
         }
 
@@ -3818,8 +3858,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 const followups = await followupsRes.json();
                 document.getElementById('stat-active-todos').textContent = followups.length || 0;
 
-                // Load Q2 OKRs P0+P1 count
-                const okrsRes = await fetch('/api/okrs/quarterly?year=2026&quarter=2');
+                // Load Q3 OKRs P0+P1 count
+                const okrsRes = await fetch('/api/okrs/quarterly?year=2026&quarter=3');
                 const okrs = await okrsRes.json();
                 const activeP0P1Count = okrs.filter(okr =>
                     (okr.priority === 'P0' || okr.priority === 'P1') &&
@@ -3833,7 +3873,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 await loadTopTodos();
                 console.log('Loading top opportunities...');
                 await loadTopOpportunities();
-                console.log('Loading Q2 OKRs...');
+                console.log('Loading Q3 OKRs...');
                 await loadQ1OKRs();
                 console.log('Loading next actions...');
                 await loadNextActions();
@@ -3922,7 +3962,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         async function loadQ1OKRs() {
             try {
-                const response = await fetch('/api/okrs/quarterly?year=2026&quarter=2');
+                const response = await fetch('/api/okrs/quarterly?year=2026&quarter=3');
                 const okrs = await response.json();
 
                 const container = document.getElementById('q1-okrs-list');
@@ -5001,10 +5041,20 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 `;
 
                 filteredCompanies.forEach(company => {
-                    const hasCheck = scores[company.grid_company_id]?.[crit.criteria_id] || 0;
+                    const currentVal = scores[company.grid_company_id]?.[crit.criteria_id] ?? '';
                     html += `
-                        <td class="score-cell" onclick="toggleGridScore(${company.grid_company_id}, ${crit.criteria_id})">
-                            ${hasCheck ? '<span class="checkbox-icon">✓</span>' : ''}
+                        <td class="score-cell">
+                            <input type="number"
+                                class="grid-score-input"
+                                min="0"
+                                max="${crit.max_score}"
+                                value="${currentVal}"
+                                placeholder="—"
+                                data-company="${company.grid_company_id}"
+                                data-criteria="${crit.criteria_id}"
+                                data-max="${crit.max_score}"
+                                onchange="saveGridScore(this)"
+                                onclick="this.select()">
                         </td>
                     `;
                 });
@@ -5022,13 +5072,49 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             if (criteria && scores) {
                 criteria.forEach(crit => {
-                    if (scores[companyId]?.[crit.criteria_id]) {
-                        total += crit.max_score;
+                    const val = scores[companyId]?.[crit.criteria_id];
+                    if (val !== null && val !== undefined) {
+                        total += parseInt(val) || 0;
                     }
                 });
             }
 
             return total;
+        }
+
+        async function saveGridScore(input) {
+            const companyId = parseInt(input.dataset.company);
+            const criteriaId = parseInt(input.dataset.criteria);
+            const max = parseInt(input.dataset.max);
+            let val = input.value === '' ? null : parseInt(input.value);
+
+            // Clamp to valid range
+            if (val !== null) {
+                if (val < 0) val = 0;
+                if (val > max) val = max;
+                input.value = val;
+            }
+
+            // Update local data so score totals refresh immediately
+            if (!opportunityGridData.scores[companyId]) opportunityGridData.scores[companyId] = {};
+            opportunityGridData.scores[companyId][criteriaId] = val;
+
+            // Re-render score headers to reflect updated totals
+            renderOpportunityGrid(opportunityGridData);
+
+            try {
+                await fetch('/api/set-grid-score', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        grid_company_id: companyId,
+                        criteria_id: criteriaId,
+                        numeric_score: val
+                    })
+                });
+            } catch(e) {
+                console.error('Failed to save score:', e);
+            }
         }
 
         let currentOpportunity = null;
@@ -7182,7 +7268,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             """, (grid_id,))
             scores_raw = cursor.fetchall()
 
-            # Build scores dict: {company_id: {criteria_id: has_check}}
+            # Build scores dict: {company_id: {criteria_id: numeric_score}}
             scores = {}
             for score in scores_raw:
                 score_dict = dict(score)
@@ -7190,7 +7276,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 criteria_id = score_dict['criteria_id']
                 if company_id not in scores:
                     scores[company_id] = {}
-                scores[company_id][criteria_id] = score_dict['has_check']
+                # Use numeric_score if set, fall back to has_check*max for legacy rows
+                scores[company_id][criteria_id] = score_dict['numeric_score']
 
             conn.close()
 
@@ -7448,6 +7535,37 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             self.send_json_response({'success': True})
 
+        except Exception as e:
+            self.send_json_response({'success': False, 'error': str(e)})
+
+    def set_grid_score(self, data):
+        """Set a numeric score for company/criteria"""
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cursor = conn.cursor()
+            company_id = data['grid_company_id']
+            criteria_id = data['criteria_id']
+            value = data.get('numeric_score')  # None clears the score
+
+            cursor.execute("""
+                SELECT score_id FROM grid_scores
+                WHERE grid_company_id = ? AND criteria_id = ?
+            """, (company_id, criteria_id))
+            result = cursor.fetchone()
+
+            if result:
+                cursor.execute("""
+                    UPDATE grid_scores SET numeric_score = ? WHERE score_id = ?
+                """, (value, result[0]))
+            else:
+                cursor.execute("""
+                    INSERT INTO grid_scores (grid_company_id, criteria_id, has_check, numeric_score)
+                    VALUES (?, ?, 0, ?)
+                """, (company_id, criteria_id, value))
+
+            conn.commit()
+            conn.close()
+            self.send_json_response({'success': True})
         except Exception as e:
             self.send_json_response({'success': False, 'error': str(e)})
 
