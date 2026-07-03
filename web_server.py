@@ -8012,84 +8012,11 @@ def create_scheduled_todo(title, description, due_date, priority='medium'):
         print(f"Error creating scheduled to-do: {e}")
 
 
-def check_scheduled_tasks():
-    """Check and create scheduled OKR to-dos based on date"""
-    today = datetime.now()
-    month = today.month
-    day = today.day
-
-    # 1. December 15: Annual OKR tasks
-    if month == 12 and day == 15:
-        # Update Annual OKRs
-        create_scheduled_todo(
-            title="Update Annual OKRs",
-            description="Review and update progress on all annual OKRs for the current year.",
-            due_date=(today + timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'),
-            priority='medium'
-        )
-
-        # Draft Next Year OKRs
-        create_scheduled_todo(
-            title="Draft Next Year OKRs",
-            description=f"Create and plan OKRs for {today.year + 1}. Review goals and set priorities for the upcoming year.",
-            due_date=(today + timedelta(days=14)).strftime('%Y-%m-%d %H:%M:%S'),
-            priority='medium'
-        )
-
-    # 2. First of each month: Update Quarterly OKRs
-    if day == 1:
-        quarter = (month - 1) // 3 + 1
-        create_scheduled_todo(
-            title="Update Quarterly OKRs",
-            description=f"Update progress on Q{quarter} OKRs. Review status and add monthly progress notes.",
-            due_date=(today + timedelta(days=5)).strftime('%Y-%m-%d %H:%M:%S'),
-            priority='medium'
-        )
-
-    # 3. 10 days before end of quarter: Draft next quarter's OKRs
-    # March 20, June 20, September 20, December 20
-    if (month == 3 and day == 20) or (month == 6 and day == 20) or \
-       (month == 9 and day == 20) or (month == 12 and day == 20):
-        current_quarter = (month - 1) // 3 + 1
-        next_quarter = current_quarter + 1 if current_quarter < 4 else 1
-        next_year = today.year if next_quarter > current_quarter else today.year + 1
-
-        create_scheduled_todo(
-            title="Draft Next Quarter's OKRs",
-            description=f"Plan and create OKRs for Q{next_quarter} {next_year}. Set objectives and key results for the upcoming quarter.",
-            due_date=(today + timedelta(days=10)).strftime('%Y-%m-%d %H:%M:%S'),
-            priority='medium'
-        )
-
-
-def scheduled_task_runner():
-    """Background thread that checks for scheduled tasks daily"""
-    last_check_date = None
-
-    while True:
-        try:
-            current_date = datetime.now().date()
-
-            # Only run once per day
-            if current_date != last_check_date:
-                print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Checking for scheduled tasks...")
-                check_scheduled_tasks()
-                last_check_date = current_date
-
-            # Sleep for 1 hour before checking again
-            time.sleep(3600)
-        except Exception as e:
-            print(f"Error in scheduled task runner: {e}")
-            time.sleep(3600)
 
 
 def main():
     """Start the web server"""
     Handler = DatabaseHandler
-
-    # Start the scheduled task runner in a background thread
-    scheduler_thread = threading.Thread(target=scheduled_task_runner, daemon=True)
-    scheduler_thread.start()
 
     class DualStackServer(socketserver.TCPServer):
         address_family = socket.AF_INET6
@@ -8108,13 +8035,8 @@ def main():
         print("="*60)
         print(f"\nServer running at: http://localhost:{PORT}")
         print("\nOpen your browser and navigate to the URL above")
-        print("📅 Scheduled OKR task checker: ACTIVE")
         print("\nPress Ctrl+C to stop the server")
         print("="*60 + "\n")
-
-        # Run initial check on startup
-        print("Running initial scheduled task check...")
-        check_scheduled_tasks()
 
         try:
             httpd.serve_forever()
