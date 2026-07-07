@@ -2544,7 +2544,7 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                         <div class="stat-label">Q3 OKRs (P0+P1)</div>
                     </div>
                     <a href="https://www.linkedin.com/in/joshwetzel/" target="_blank" class="stat-card">
-                        <div class="stat-number" id="stat-linkedin-followers">11,068</div>
+                        <div class="stat-number" id="stat-linkedin-followers">11,097</div>
                         <div class="stat-label">LinkedIn Followers</div>
                     </a>
                 </div>
