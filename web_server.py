@@ -518,12 +518,16 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             --wz-accent-light: rgba(59, 130, 246, 0.10);
 
             /* Neutrals */
-            --wz-black: #0F172A;
+            --wz-black: #1C1C1A;
             --wz-dark-gray: #1E293B;
-            --wz-mid-gray: #64748B;
-            --wz-light-gray: #E2E8F0;
-            --wz-pale-gray: #F4F6F8;
+            --wz-mid-gray: #6B6B63;
+            --wz-light-gray: #E8E8E3;
+            --wz-pale-gray: #F5F5F2;
             --wz-white: #FFFFFF;
+            --wz-canvas: #F5F5F2;
+            --sidebar-border: #E8E8E3;
+            --sidebar-text: #3D3D38;
+            --sidebar-text-muted: #8A8A80;
 
             /* Semantic */
             --wz-error: #EF4444;
@@ -563,8 +567,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             --bg-primary: var(--wz-pale-gray);
             --bg-secondary: var(--wz-white);
             --bg-tertiary: var(--wz-pale-gray);
-            --bg-sidebar: #0F172A;
-            --bg-hover: rgba(255,255,255,0.06);
+            --bg-sidebar: #FFFFFF;
+            --bg-hover: #F5F5F2;
             --text-primary: var(--wz-black);
             --text-secondary: var(--wz-mid-gray);
             --text-tertiary: var(--wz-mid-gray);
@@ -613,87 +617,114 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         /* Sidebar Navigation */
         .sidebar {
-            width: 250px;
-            background: var(--bg-sidebar);
-            color: #94A3B8;
+            width: 264px;
+            background: #FFFFFF;
             position: fixed;
             height: 100vh;
             left: 0;
             top: 0;
             overflow-y: auto;
             z-index: 1000;
-            border-right: 1px solid rgba(255,255,255,0.06);
+            border-right: 1px solid #E8E8E3;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-header {
-            padding: 20px 10px;
-            background: var(--bg-sidebar);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 24px 18px 28px 18px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            gap: 12px;
+            border-bottom: none;
+            background: #FFFFFF;
+            flex-shrink: 0;
         }
 
-        .sidebar-header a {
-            text-decoration: none;
-            display: block;
-            width: 100%;
+        .sidebar-logo-mark {
+            width: 44px;
+            height: 44px;
+            flex: none;
+            border-radius: 13px;
+            background: #3B82F6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(59,130,246,0.35);
         }
 
-        .sidebar-header img {
-            width: 100%;
-            height: auto;
-            cursor: pointer;
-            transition: opacity 0.2s;
+        .sidebar-logo-text {
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar-header img:hover {
-            opacity: 0.85;
+        .sidebar-logo-name {
+            font-weight: 800;
+            font-size: 19px;
+            letter-spacing: -0.01em;
+            color: #1C1C1A;
+            line-height: 1.15;
+        }
+
+        .sidebar-logo-sub {
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            color: #3B82F6;
+            text-transform: uppercase;
         }
 
         .nav-menu {
-            padding: 8px 10px;
+            padding: 8px 18px;
+            flex: 1;
         }
 
         .nav-item {
-            padding: 9px 12px;
-            color: #94A3B8;
+            padding: 10px 12px;
+            color: #3D3D38;
             cursor: pointer;
             transition: background 0.15s, color 0.15s;
-            border-radius: var(--wz-radius-sm);
-            margin: 1px 0;
+            border-radius: 10px;
+            margin: 2px 0;
             display: flex;
             align-items: center;
-            gap: 9px;
-            font-size: 13px;
-            font-weight: 400;
-            letter-spacing: 0.01em;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-decoration: none;
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.07);
-            color: #CBD5E1;
+            background: #F5F5F2;
+            color: #1C1C1A;
         }
 
         .nav-item.active {
-            background: rgba(59, 130, 246, 0.18);
-            color: #FFFFFF;
-            font-weight: 500;
+            background: rgba(59, 130, 246, 0.10);
+            color: #3B82F6;
+            font-weight: 700;
         }
 
         .nav-icon {
-            font-size: 15px;
+            display: flex;
+            align-items: center;
             width: 18px;
-            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .nav-logout {
+            padding: 18px 18px 24px;
+            border-top: 1px solid #E8E8E3;
+            margin-top: auto;
             flex-shrink: 0;
         }
 
         /* Main Content Area */
         .main-wrapper {
-            margin-left: 250px;
+            margin-left: 264px;
             flex: 1;
             min-height: 100vh;
-            background: var(--wz-pale-gray);
+            background: #F5F5F2;
         }
 
         .top-bar {
@@ -714,7 +745,21 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .content-area {
-            padding: 30px;
+            padding: 36px 44px 60px;
+        }
+
+        .page-header-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            color: #1C1C1A;
+            margin: 0 0 4px;
+        }
+
+        .page-header-subtitle {
+            font-size: 15px;
+            color: #6B6B63;
+            margin: 0 0 28px;
         }
 
         /* Page View Containers */
@@ -729,44 +774,44 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         /* Dashboard Specific Styles */
         .quick-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
             margin-bottom: 30px;
         }
 
         .stat-card {
-            background: var(--wz-white);
-            padding: 28px var(--wz-space-lg);
-            border-radius: var(--wz-radius-lg);
-            box-shadow: var(--wz-shadow-1);
+            background: #FFFFFF;
+            padding: 22px 20px;
+            border-radius: 16px;
+            border: 1px solid #E8E8E3;
+            box-shadow: none;
             transition: box-shadow 0.2s, transform 0.15s;
             cursor: pointer;
-            text-align: center;
+            text-align: left;
             text-decoration: none;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
             color: inherit;
-            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .stat-card:hover {
-            box-shadow: var(--wz-shadow-2);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(28,28,26,0.08);
+            transform: translateY(-1px);
         }
 
         .stat-number {
             font-size: 32px;
-            font-weight: 700;
-            color: var(--wz-accent);
-            margin-bottom: 8px;
-            letter-spacing: -0.03em;
-            font-variant-numeric: tabular-nums;
+            font-weight: 800;
+            color: #3B82F6;
+            letter-spacing: -0.02em;
         }
 
         .stat-label {
-            color: var(--text-secondary);
-            font-size: 10px;
+            color: #6B6B63;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
             font-weight: 600;
         }
 
@@ -779,11 +824,10 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .dashboard-section {
-            background: var(--wz-white);
-            border-radius: var(--wz-radius-lg);
-            box-shadow: var(--wz-shadow-1);
-            padding: var(--wz-space-lg);
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            background: #FFFFFF;
+            border-radius: 16px;
+            border: 1px solid #E8E8E3;
+            box-shadow: none;
             overflow: hidden;
         }
 
@@ -791,16 +835,26 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 0;
-            border-bottom: none;
+            padding: 18px 22px;
+            border-bottom: 1px solid #E8E8E3;
         }
 
         .section-title {
-            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 15.5px;
             font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
+            color: #1C1C1A;
+        }
+
+        .section-title-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 3px;
+            background: #3B82F6;
+            display: inline-block;
+            flex-shrink: 0;
         }
 
         .section-action {
@@ -860,25 +914,46 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         }
 
         .todo-priority {
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 9999px;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .priority-high {
-            background: var(--priority-high-bg);
-            color: var(--priority-high-text);
+            background: #FEE9E9;
+            color: #C53030;
+            border-radius: 9999px;
         }
 
         .priority-medium {
-            background: var(--priority-medium-bg);
-            color: var(--priority-medium-text);
+            background: #FEF3CD;
+            color: #8B6000;
+            border-radius: 9999px;
         }
 
         .priority-low {
-            background: var(--priority-low-bg);
-            color: var(--priority-low-text);
+            background: #E8F0FE;
+            color: #3B5FC0;
+            border-radius: 9999px;
+        }
+
+        .status-on-track {
+            background: #E6F4EC;
+            color: #276749;
+            border-radius: 9999px;
+        }
+
+        .status-at-risk {
+            background: #FEF3CD;
+            color: #8B6000;
+            border-radius: 9999px;
+        }
+
+        .status-off-track, .status-done {
+            background: #F0F0ED;
+            color: #6B6B63;
+            border-radius: 9999px;
         }
 
         /* Opportunity Item */
@@ -1633,11 +1708,11 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         /* Responsive */
         @media (max-width: 968px) {
             .sidebar {
-                width: 200px;
+                width: 220px;
             }
 
             .main-wrapper {
-                margin-left: 200px;
+                margin-left: 220px;
             }
 
             .dashboard-grid {
@@ -2483,40 +2558,50 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
     <!-- Left Sidebar Navigation -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <a href="#" onclick="navigateTo('dashboard'); return false;">
-                <img src="/static/logo.png" alt="Wetzel CRM" id="logo">
-            </a>
+            <div class="sidebar-logo-mark">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <rect x="7" y="1" width="10" height="10" rx="2.5" transform="rotate(45 12 6)" fill="white"/>
+                    <rect x="1" y="13" width="8" height="8" rx="2" transform="rotate(45 5 17)" fill="white" opacity="0.55"/>
+                    <rect x="15" y="13" width="8" height="8" rx="2" transform="rotate(45 19 17)" fill="white" opacity="0.55"/>
+                </svg>
+            </div>
+            <div class="sidebar-logo-text">
+                <div class="sidebar-logo-name">Wetzel</div>
+                <div class="sidebar-logo-sub">CRM</div>
+            </div>
         </div>
         <nav class="nav-menu">
             <div class="nav-item active" onclick="navigateTo('dashboard')">
-                <span class="nav-icon">📊</span>
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
                 <span>Dashboard</span>
             </div>
             <div class="nav-item" onclick="navigateTo('agents')">
-                <span class="nav-icon">🤖</span>
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg></span>
                 <span>Agents</span>
             </div>
             <div class="nav-item" onclick="navigateTo('opportunities')">
-                <span class="nav-icon">🎯</span>
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg></span>
                 <span>Opportunities</span>
             </div>
             <div class="nav-item" onclick="navigateTo('todos')">
-                <span class="nav-icon">✅</span>
-                <span>To Do's</span>
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12l2.5 2.5L16 9"/></svg></span>
+                <span>To-Do's</span>
             </div>
             <div class="nav-item" onclick="navigateTo('contacts')">
-                <span class="nav-icon">👥</span>
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.5 14.2c2.6.4 4.5 2.4 4.5 5.3"/></svg></span>
                 <span>Contacts</span>
             </div>
             <div class="nav-item" onclick="navigateTo('okrs')">
-                <span class="nav-icon">🎯</span>
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg></span>
                 <span>OKRs</span>
             </div>
-            <div class="nav-item" onclick="window.location.href='/logout'" style="margin-top: auto; border-top: 1px solid var(--wz-light-gray); opacity: 0.8;">
-                <span class="nav-icon">🚪</span>
+        </nav>
+        <div class="nav-logout">
+            <div class="nav-item" onclick="window.location.href='/logout'" style="margin: 0;">
+                <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></span>
                 <span>Logout</span>
             </div>
-        </nav>
+        </div>
     </div>
 
     <!-- Main Content Area -->
@@ -2529,6 +2614,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         <div class="content-area">
             <!-- ==================== DASHBOARD PAGE ==================== -->
             <div id="dashboard-page" class="page-view active">
+                <h1 class="page-header-title">Good morning, Josh</h1>
+                <p class="page-header-subtitle">Here's what's happening across your world today.</p>
                 <!-- Quick Stats Row -->
                 <div class="quick-stats">
                     <div class="stat-card" onclick="navigateTo('opportunities')">
@@ -2554,8 +2641,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     <!-- Top 10 To-Do's Section -->
                     <div class="dashboard-section">
                         <div class="section-header">
-                            <h3 class="section-title">📋 Top 10 To-Do's</h3>
-                            <a href="#" class="section-action" onclick="navigateTo('todos'); return false;">View All</a>
+                            <div class="section-title"><span class="section-title-dot"></span>Top 10 To-Do's</div>
+                            <a href="#" class="section-action" onclick="navigateTo('todos'); return false;">View all</a>
                         </div>
                         <div id="top-todos-list" class="loading">Loading...</div>
                     </div>
@@ -2563,18 +2650,18 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     <!-- Top 5 Opportunities Section -->
                     <div class="dashboard-section">
                         <div class="section-header">
-                            <h3 class="section-title">🎯 Top 5 Opportunities</h3>
-                            <a href="#" class="section-action" onclick="navigateTo('opportunities'); return false;">View All</a>
+                            <div class="section-title"><span class="section-title-dot"></span>Top 5 Opportunities</div>
+                            <a href="#" class="section-action" onclick="navigateTo('opportunities'); return false;">View all</a>
                         </div>
                         <div id="top-opps-list" class="loading">Loading...</div>
                     </div>
                 </div>
 
-                <!-- Q2 2026 OKRs Section -->
-                <div class="dashboard-section" style="margin-bottom: 30px;">
+                <!-- Q3 2026 OKRs Section -->
+                <div class="dashboard-section" style="margin-bottom: 20px;">
                     <div class="section-header">
-                        <h3 class="section-title">🎯 Q3 2026 OKRs (P0 + P1)</h3>
-                        <a href="#" class="section-action" onclick="navigateToQ3OKRs(); return false;">View All</a>
+                        <div class="section-title"><span class="section-title-dot"></span>Q3 2026 OKRs (P0 + P1)</div>
+                        <a href="#" class="section-action" onclick="navigateToQ3OKRs(); return false;">View all</a>
                     </div>
                     <div id="q1-okrs-list" class="loading">Loading...</div>
                 </div>
@@ -2583,14 +2670,14 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 <div class="dashboard-grid">
                     <div class="dashboard-section">
                         <div class="section-header">
-                            <h3 class="section-title">⚡ Next Actions</h3>
+                            <div class="section-title"><span class="section-title-dot"></span>Next Actions</div>
                         </div>
                         <div id="next-actions-list" class="loading">Loading...</div>
                     </div>
 
                     <div class="dashboard-section">
                         <div class="section-header">
-                            <h3 class="section-title">📅 Recent Activity</h3>
+                            <div class="section-title"><span class="section-title-dot"></span>Recent Activity</div>
                         </div>
                         <div id="recent-activity-list" class="loading">Loading...</div>
                     </div>
@@ -2599,8 +2686,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 <!-- Recent Contacts Section -->
                 <div class="dashboard-section" style="margin-top: 20px;">
                     <div class="section-header">
-                        <h3 class="section-title">👥 Recent Contacts</h3>
-                        <a href="#" class="section-action" onclick="navigateTo('contacts'); return false;">View All</a>
+                        <div class="section-title"><span class="section-title-dot"></span>Recent Contacts</div>
+                        <a href="#" class="section-action" onclick="navigateTo('contacts'); return false;">View all</a>
                     </div>
                     <div id="recent-contacts-list" class="loading">Loading...</div>
                 </div>
