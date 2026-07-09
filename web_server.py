@@ -1172,51 +1172,147 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
         .contacts-grid {
             display: grid;
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
         }
 
         .contact-card {
-            background: var(--wz-white);
-            padding: 20px;
-            border-radius: var(--wz-radius-lg);
+            background: #FFFFFF;
+            padding: 20px 22px;
+            border-radius: 16px;
             transition: box-shadow 0.2s, transform 0.15s;
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            box-shadow: var(--wz-shadow-1);
+            border: 1px solid #E8E8E3;
+            box-shadow: none;
         }
 
         .contact-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--wz-shadow-2);
-            border-color: rgba(59, 130, 246, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(28,28,26,0.08);
+        }
+
+        .contact-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .contact-name {
+            font-size: 16.5px;
+            font-weight: 700;
+            color: #1C1C1A;
+            margin-bottom: 2px;
         }
 
         .contact-company {
-            color: var(--accent-primary);
-            margin-bottom: 8px;
+            color: #3B82F6;
+            font-size: 13.5px;
+            font-weight: 600;
         }
 
         .contact-details {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
+            font-size: 13px;
+            color: #6B6B63;
+            margin-bottom: 3px;
         }
 
-        .relationship-badges {
+        .contact-details a {
+            color: #3B82F6;
+            text-decoration: none;
+        }
+
+        .contact-details a:hover { text-decoration: underline; }
+
+        .contact-actions {
             display: flex;
-            flex-wrap: wrap;
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 14px;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            background: var(--wz-accent-light);
-            color: var(--wz-accent);
-            border-radius: var(--wz-radius-pill);
-            font-size: 11px;
-            font-weight: 500;
+        .btn-contact-todo {
+            padding: 6px 14px;
+            background: #E6F4EC;
+            color: #276749;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: var(--wz-font);
+            transition: background 0.15s;
         }
+        .btn-contact-todo:hover { background: #d0ecda; }
+
+        .btn-contact-edit {
+            padding: 6px 14px;
+            background: #E8F0FE;
+            color: #3B5FC0;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: var(--wz-font);
+            transition: background 0.15s;
+        }
+        .btn-contact-edit:hover { background: #d4e3fc; }
+
+        .contact-notes-section {
+            margin-top: 14px;
+            border-top: 1px solid #E8E8E3;
+            padding-top: 14px;
+        }
+
+        .contact-notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .contact-notes-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #3B82F6;
+        }
+
+        .btn-add-note {
+            padding: 4px 12px;
+            background: #E8F0FE;
+            color: #3B5FC0;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: var(--wz-font);
+        }
+
+        .contact-notes-body {
+            white-space: pre-wrap;
+            font-size: 12.5px;
+            color: #6B6B63;
+            max-height: 180px;
+            overflow-y: auto;
+            background: #F5F5F2;
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+        /* Relationship tag badges */
+        .rel-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .rel-badge-recruiter  { background: #E8F0FE; color: #3B5FC0; }
+        .rel-badge-executive  { background: #E6F4EC; color: #276749; }
+        .rel-badge-co-worker  { background: #F0F0ED; color: #6B6B63; }
+        .rel-badge-friend     { background: #F3EDFE; color: #6B3FA0; }
+        .rel-badge-prospective{ background: #FEF3CD; color: #8B6000; }
 
         .filter-section {
             margin-bottom: 20px;
@@ -1225,31 +1321,30 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
         .filter-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .filter-btn {
-            padding: 6px 16px;
-            border: 1px solid var(--wz-light-gray);
-            background: var(--wz-white);
-            color: var(--wz-mid-gray);
-            border-radius: var(--wz-radius-pill);
+            padding: 8px 18px;
+            border: 1px solid #E8E8E3;
+            background: #FFFFFF;
+            color: #3D3D38;
+            border-radius: 9999px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 13.5px;
+            font-weight: 600;
             font-family: var(--wz-font);
             transition: all 0.15s;
         }
 
         .filter-btn.active {
-            background: var(--wz-accent);
+            background: #3B82F6;
             color: white;
-            border-color: var(--wz-accent);
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+            border-color: #3B82F6;
         }
 
         .filter-btn:hover:not(.active) {
-            background: var(--wz-pale-gray);
+            background: #F5F5F2;
             color: var(--wz-black);
         }
 
@@ -2813,7 +2908,15 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             <!-- ==================== CONTACTS PAGE ==================== -->
             <div id="contacts-page" class="page-view">
-                <div class="sub-tabs">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:22px;">
+                    <div>
+                        <h1 class="page-header-title">Contacts</h1>
+                        <p class="page-header-subtitle" style="margin:0;">Everyone in your network, in one place.</p>
+                    </div>
+                    <button onclick="switchContactTab('add')" style="background:#3B82F6; color:#fff; border:none; border-radius:10px; padding:11px 18px; font-size:14px; font-weight:700; cursor:pointer; font-family:var(--wz-font);">+ Add Contact</button>
+                </div>
+
+                <div class="sub-tabs" style="margin-bottom:24px;">
                     <button class="sub-tab active" onclick="switchContactTab('view')">View Contacts</button>
                     <button class="sub-tab" onclick="switchContactTab('add')">Add Contact</button>
                     <button class="sub-tab" onclick="switchContactTab('relationships')">Manage Relationships</button>
@@ -2821,10 +2924,9 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
                 <!-- View Contacts Sub-Tab -->
                 <div id="view-subtab" class="sub-tab-content active">
-                    <input type="text" id="search-input" class="search-box" placeholder="Search by name, company, or email...">
+                    <input type="text" id="search-input" class="search-box" placeholder="Search by name, company, or email..." style="width:100%; padding:13px 16px; border-radius:11px; border:1px solid #E8E8E3; font-size:14.5px; font-family:var(--wz-font); margin-bottom:16px; background:#fff; box-shadow:none;">
 
                     <div class="filter-section">
-                        <label>Filter by relationship:</label>
                         <div class="filter-buttons">
                             <button class="filter-btn active" onclick="filterByRelationship('all')">All</button>
                             <button class="filter-btn" onclick="filterByRelationship('recruiter')">Recruiters</button>
@@ -2868,6 +2970,16 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                         <div class="form-group">
                             <label>Phone</label>
                             <input type="tel" id="phone">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Focus Area <small style="color:#8A8A80; font-weight:400;">(types of roles they focus on)</small></label>
+                            <input type="text" id="focus_area" placeholder="e.g., CRO, VP Sales, GTM Leadership">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Most Relevant Search <small style="color:#8A8A80; font-weight:400;">(link to job discussion)</small></label>
+                            <input type="url" id="search_link" placeholder="https://...">
                         </div>
 
                         <div class="form-group">
@@ -3310,6 +3422,18 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                     <div class="form-group form-group-full">
                         <label>LinkedIn Profile URL</label>
                         <input type="url" id="edit-linkedin" placeholder="https://linkedin.com/in/username">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group form-group-full">
+                        <label>Focus Area <small style="color:#8A8A80; font-weight:400;">(types of roles they focus on)</small></label>
+                        <input type="text" id="edit-focus-area" placeholder="e.g., CRO, VP Sales, GTM Leadership">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group form-group-full">
+                        <label>Most Relevant Search <small style="color:#8A8A80; font-weight:400;">(link to job discussion)</small></label>
+                        <input type="url" id="edit-search-link" placeholder="https://...">
                     </div>
                 </div>
                 <div class="form-row">
@@ -4298,48 +4422,61 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 return;
             }
 
-            container.innerHTML = contacts.map(contact => `
+            const relBadgeClass = {
+                'recruiter': 'rel-badge-recruiter',
+                'executive': 'rel-badge-executive',
+                'co-worker': 'rel-badge-co-worker',
+                'friend': 'rel-badge-friend',
+                'prospective': 'rel-badge-prospective'
+            };
+            const relLabel = {
+                'recruiter': 'Recruiter', 'executive': 'Executive',
+                'co-worker': 'Co-worker', 'friend': 'Friend', 'prospective': 'Prospective'
+            };
+
+            container.innerHTML = contacts.map(contact => {
+                const slug = contact.person_name.replace(/\\s+/g, '-');
+                const rels = contact.relationship_types ? contact.relationship_types.split(', ') : [];
+                const primaryRel = rels[0] || '';
+                return `
                 <div class="contact-card" data-contact-name="${contact.person_name}" data-contact-id="${contact.contact_id}">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                        <div style="flex: 1;">
+                    <div class="contact-card-top">
+                        <div>
                             <div class="contact-name">${contact.person_name}</div>
-                            <div class="contact-company">${contact.company_name || 'No company'}</div>
+                            ${contact.company_name ? `<div class="contact-company">${contact.company_name}</div>` : ''}
                         </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn-todo-contact" data-name="${contact.person_name}" style="padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✅ To Do's</button>
-                            <button class="btn-edit-contact" data-name="${contact.person_name}" style="padding: 6px 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✏️ Edit</button>
-                        </div>
+                        ${primaryRel ? `<span class="rel-badge ${relBadgeClass[primaryRel] || ''}">${relLabel[primaryRel] || primaryRel}</span>` : ''}
                     </div>
-                    ${contact.role ? `<div class="contact-details">📋 ${contact.role}</div>` : ''}
-                    ${contact.email ? `<div class="contact-details">✉️ ${contact.email}</div>` : ''}
-                    ${contact.phone_number ? `<div class="contact-details">📞 ${contact.phone_number}</div>` : ''}
-                    ${contact.linkedin_url ? `<div class="contact-details">🔗 <a href="${contact.linkedin_url}" target="_blank" style="color: #0077b5; text-decoration: none;">LinkedIn Profile</a></div>` : ''}
-                    ${contact.opportunity ? `<div class="contact-details">🎯 ${contact.opportunity}</div>` : ''}
-                    ${contact.relationship_types ? `
-                        <div class="relationship-badges">
-                            ${contact.relationship_types.split(', ').map(rel =>
-                                `<span class="badge">${rel}</span>`
-                            ).join('')}
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:10px;">
+                        ${contact.role ? `<div class="contact-details">${contact.role}</div>` : ''}
+                        ${contact.email ? `<div class="contact-details">${contact.email}</div>` : ''}
+                        ${contact.phone_number ? `<div class="contact-details">${contact.phone_number}</div>` : ''}
+                        ${contact.focus_area ? `<div class="contact-details"><span style="font-weight:600; color:#1C1C1A;">Focus:</span> ${contact.focus_area}</div>` : ''}
+                        ${contact.search_link ? `<div class="contact-details"><a href="${contact.search_link}" target="_blank">View Job Discussion →</a></div>` : ''}
+                        ${contact.linkedin_url ? `<div class="contact-details"><a href="${contact.linkedin_url}" target="_blank">LinkedIn Profile →</a></div>` : ''}
+                    </div>
+                    <div class="contact-actions">
+                        <button class="btn-todo-contact btn-contact-todo" data-name="${contact.person_name}">To Do's</button>
+                        <button class="btn-edit-contact btn-contact-edit" data-name="${contact.person_name}">Edit</button>
+                    </div>
+                    <div class="contact-notes-section">
+                        <div class="contact-notes-header">
+                            <span class="contact-notes-label">Notes</span>
+                            <button class="btn-add-note" data-name="${contact.person_name}">+ Add Note</button>
                         </div>
-                    ` : ''}
-                    <div class="notes-section" style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <strong style="color: #667eea;">📝 Notes</strong>
-                            <button class="btn-add-note" data-name="${contact.person_name}" style="padding: 4px 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">+ Add Note</button>
-                        </div>
-                        <div id="note-input-${contact.person_name.replace(/\\s+/g, '-')}" style="display: none; margin-bottom: 10px;">
-                            <textarea id="note-text-${contact.person_name.replace(/\\s+/g, '-')}" style="width: 100%; padding: 8px; border: 2px solid #667eea; border-radius: 4px; font-size: 14px; min-height: 60px;" placeholder="Add your note here..."></textarea>
-                            <div style="margin-top: 8px; display: flex; gap: 8px;">
-                                <button class="btn-save-note" data-name="${contact.person_name}" style="padding: 6px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Save Note</button>
-                                <button class="btn-cancel-note" data-name="${contact.person_name}" style="padding: 6px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">Cancel</button>
+                        <div id="note-input-${slug}" style="display:none; margin-bottom:10px;">
+                            <textarea id="note-text-${slug}" style="width:100%; padding:10px; border:1.5px solid #3B82F6; border-radius:8px; font-size:13px; min-height:60px; font-family:var(--wz-font); resize:vertical;" placeholder="Add your note here..."></textarea>
+                            <div style="margin-top:8px; display:flex; gap:8px;">
+                                <button class="btn-save-note btn-contact-todo" data-name="${contact.person_name}" style="border-radius:8px;">Save Note</button>
+                                <button class="btn-cancel-note btn-contact-edit" data-name="${contact.person_name}" style="border-radius:8px;">Cancel</button>
                             </div>
                         </div>
-                        <div id="notes-display-${contact.person_name.replace(/\\s+/g, '-')}" style="white-space: pre-wrap; font-size: 13px; color: #555; max-height: 200px; overflow-y: auto; background: #f9f9f9; padding: 10px; border-radius: 4px;">
-                            ${contact.notes || '<em style="color: #999;">No notes yet</em>'}
+                        <div id="notes-display-${slug}" class="contact-notes-body">
+                            ${contact.notes || '<em style="color:#8A8A80;">No notes yet</em>'}
                         </div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
 
             // Add event listeners for buttons
             document.querySelectorAll('.btn-edit-contact').forEach(btn => {
@@ -4411,6 +4548,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 role: document.getElementById('role').value || null,
                 email: document.getElementById('email').value || null,
                 phone: document.getElementById('phone').value || null,
+                focus_area: document.getElementById('focus_area').value || null,
+                search_link: document.getElementById('search_link').value || null,
                 opportunity: document.getElementById('opportunity').value || null,
                 notes: document.getElementById('notes').value || null,
                 relationships: relationships
@@ -4538,6 +4677,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             document.getElementById('edit-phone').value = contact.phone_number || '';
             document.getElementById('edit-role').value = contact.role || '';
             document.getElementById('edit-linkedin').value = contact.linkedin_url || '';
+            document.getElementById('edit-focus-area').value = contact.focus_area || '';
+            document.getElementById('edit-search-link').value = contact.search_link || '';
             document.getElementById('edit-opportunity').value = contact.opportunity || '';
 
             document.getElementById('editModal').style.display = 'block';
@@ -4567,6 +4708,8 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
                 phone: document.getElementById('edit-phone').value,
                 role: document.getElementById('edit-role').value,
                 linkedin_url: document.getElementById('edit-linkedin').value,
+                focus_area: document.getElementById('edit-focus-area').value,
+                search_link: document.getElementById('edit-search-link').value,
                 opportunity: document.getElementById('edit-opportunity').value,
                 notes: null,
                 last_connection: null,
@@ -6849,10 +6992,11 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
 
             # Add contact
             cursor.execute("""
-                INSERT INTO contacts (person_name, company_id, role, email, phone_number, opportunity, notes)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO contacts (person_name, company_id, role, email, phone_number, opportunity, notes, focus_area, search_link)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (data['person_name'], company_id, data.get('role'), data.get('email'),
-                  data.get('phone'), data.get('opportunity'), data.get('notes')))
+                  data.get('phone'), data.get('opportunity'), data.get('notes'),
+                  data.get('focus_area'), data.get('search_link')))
 
             contact_id = cursor.lastrowid
 
@@ -6943,6 +7087,14 @@ class DatabaseHandler(http.server.SimpleHTTPRequestHandler):
             if 'opportunity' in data and data.get('opportunity') is not None:
                 update_fields.append('opportunity = ?')
                 update_values.append(data.get('opportunity'))
+
+            if 'focus_area' in data and data.get('focus_area') is not None:
+                update_fields.append('focus_area = ?')
+                update_values.append(data.get('focus_area'))
+
+            if 'search_link' in data and data.get('search_link') is not None:
+                update_fields.append('search_link = ?')
+                update_values.append(data.get('search_link'))
 
             if 'notes' in data and data.get('notes') is not None:
                 update_fields.append('notes = ?')
